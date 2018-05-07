@@ -1,0 +1,8 @@
+#REWRITE ENGINE ON#
+RewriteEngine On
+#DIRECTORY BROWSING OFF#
+Options -Indexes
+#ROUTING WITH HTACCESS WITHOUT PHP EXTENSION#
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^/.]+?)(/.+)?$ $1.php$2 [L]

@@ -1,0 +1,102 @@
+/* SUMMARY OF THEMES COLOR SCHEMES */
+.theme-main-table{
+    border: 1px solid #CCC;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.theme-inner-table{
+    border-bottom: 1px solid #CCC;
+    background-color: #EEE;
+    border-top: 1px solid #CCC;
+}
+.amber{
+    background-color: #EEE;
+}
+.amber-sidebar{
+    background-color: #FFAB00;
+}
+
+.gray{
+    background-color: #EEE;
+}
+.gray-sidebar{
+    background-color: #616161;
+}
+
+.slate{
+    background-color: #EEE;
+}
+.slate-sidebar{
+    background-color: #455A64;
+}
+
+
+.brown{
+    background-color: #EEE;
+}
+.brown-sidebar{
+    background-color: #5D4037;
+}
+
+
+.default{
+    background-color: #EEE;
+}
+.default-sidebar{
+    background-color: #0049B0;
+}
+
+.green{
+    background-color: #EEE;
+}
+.green-sidebar{
+    background-color: #26A69A;
+}
+
+.lime{
+    background-color: #EEE;
+}
+.lime-sidebar{
+    background-color: #C0CA33;
+}
+
+.orange{
+    background-color: #EEE;
+}
+.orange-sidebar{
+    background-color: #FF6D00;
+}
+
+.pink{
+    background-color: #EEE;
+}
+.pink-sidebar{
+    background-color: #F5A5BE;
+}
+
+.purple{
+    background-color: #EEE;
+}
+.purple-sidebar{
+    background-color: #7C4DFF;
+}
+
+.red{
+    background-color: #EEE;
+}
+.red-sidebar{
+    background-color: #C51162;
+}
+
+.sky{
+    background-color: #EEE;
+}
+.sky-sidebar{
+    background-color: #448AFF;
+}
+.crimson{
+    background-color: #EEE;
+}
+.crimson-sidebar{
+    background-color: #DC143C;
+}

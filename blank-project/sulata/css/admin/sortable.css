@@ -1,0 +1,25 @@
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%;}
+#sortable li {  }
+#sortable li span { position: absolute; margin-left: -1.3em; }
+#sortable table{
+    width: 100%;
+    border-bottom: 1px solid #CCC;
+    margin-top: -1px;
+}
+#sortable table tr td{
+    border-top: 1px solid #CCC;
+
+    background-color: #EEE;
+    padding: 0.5%;
+}
+.field{
+    width:100%;
+    border: 1px solid #666;
+}
+.ui-state-default{
+    border-bottom: 1px solid #CCC;
+    background-color: #EEE;
+    padding: 1%;
+    cursor: move;
+    margin: 1%;
+}

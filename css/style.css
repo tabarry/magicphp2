@@ -1,0 +1,77 @@
+body{
+    font-family: 'Trebuchet MS',Tahoma, Arial;
+    font-size: 14px;
+    color: #333;
+    margin: 2%;
+    background-image: url(images/wizard.png);
+    background-position: middle;
+    background-repeat: no-repeat;
+}
+a{
+    color: #333;
+}
+a:hover{
+    text-decoration: none;
+}
+h1{
+    font-weight: normal;
+    background-image: url(images/hat.png);
+    background-position: left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    padding-left: 50px;
+    display: inline;
+}
+h1 a{
+    text-decoration: none;
+}
+h1 small{
+    font-size: 70%;
+    letter-spacing: 3px;
+    color: #666;
+}
+#error-area{
+    color: crimson;
+}
+#success-area{
+    display: none;
+    color: green;
+}
+#success-area a{
+    color: green;
+}
+
+.frame-show{
+    width: 95%;
+    height: 300px;
+    border: 2px solid #CCC;
+}
+.frame-hide{
+    width: 95%;
+    height: 300px;
+    border: 2px solid #CCC;
+    display: none;
+}
+input[type=text],input[type=password]{
+    display:block;
+    padding: 1%;
+    margin: 0.5%;
+    width: 300px;
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    font-size: 100%;
+    font-family: 'Trebuchet MS',Tahoma, Arial;
+}
+input[type=submit]{
+    display:block;
+    padding: 1%;
+    margin: 0.5%;
+    font-size: 100%;
+    font-family: 'Trebuchet MS',Tahoma, Arial;
+}
+footer{
+    font-size: 90%;
+    padding: 1%;
+    letter-spacing: 3px;
+    box-sizing: border-box;
+}
