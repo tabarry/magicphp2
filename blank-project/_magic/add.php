@@ -217,6 +217,8 @@ $mode = 'add';
                                 <div id="destLi"></div>
                             </ul>
                             <div>&nbsp;</div>
+                            <button type="button" onclick="doCloneRow('sourceLi', 'destLi');" id="doClone" class="btn btn-sm btn-theme"><i class="fa fa-plus-circle"></i> Add Row</button>
+                             <p class="clearfix"></p>
                             <ul>
                                 <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'.</li>
                                 <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may also be added like:  AND id='$id'.</li>
@@ -224,7 +226,7 @@ $mode = 'add';
                                 <li>If field type is selected as 'Date', you can provide default value by specifying a number. 0 is today, -1 is yesterday, +1 is tomorrow and so on.</li>
                                 <li>If field type 'Year' is selected, provide 'start year' and 'end year', separated by a comma in the 'Length/Value' textbox in a format, number of years minus current year and number of years + current years. E.g. '-100,+10'. To pass a default value, provide '0' to specify current year or -x or +x where x is the number of years from current year.</li>
                             </ul>
-                            <button type="button" onclick="doCloneRow('sourceLi', 'destLi');" id="doClone" class="btn btn-sm btn-theme"><i class="fa fa-plus-circle"></i> Add Row</button>
+                            
 
                             <div class="clearfix"></div>
                             <p>
