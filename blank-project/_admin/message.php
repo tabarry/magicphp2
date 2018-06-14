@@ -52,8 +52,8 @@ $h1 = $title;
                         <div id="message-area">
                             <p></p>
                         </div>
-                        <div class="fifty-height"></div>
-                        <p><?php
+                        <p class="system-message">
+                            <?php
                             if (isset($_GET['msg'])) {
                                 echo $_GET['msg'];
                             }

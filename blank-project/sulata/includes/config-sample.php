@@ -13,8 +13,8 @@ error_reporting("E_ALL & ~E_NOTICE");
 //ini_set('display_errors', 1);
 
 /* MISC SETTINGS */
-define('LOCAL_URL', 'http://localhost/#PROJECT_NAME#/');
-define('WEB_URL', 'http://localhost/#PROJECT_NAME#/');
+define('LOCAL_URL', 'http://localhost/#PROJECT_FOLDER#/');
+define('WEB_URL', 'http://localhost/#PROJECT_FOLDER#/');
 define('ADMIN_FOLDER', '_admin'); //This is the name of admin folder
 define('MAGIC_FOLDER', '_magic'); //This is the name of magic folder
 define('SESSION_PREFIX', 'a#SESSION_PREFIX#_');

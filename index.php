@@ -28,9 +28,11 @@ if (isset($_COOKIE['ck_db_port']) && $_COOKIE['ck_db_port'] != '') {
 }
 
 //Form fields
-$onkeyup = "this.value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');document.getElementById('project-name').innerHTML=this.value;";
+$onkeyup = "document.getElementById('project_folder').value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');";
+$onkeyup2 = "this.value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');document.getElementById('project-name').innerHTML=this.value;";
 $fieldsArray = array(
-    'project_name' => array('placeholder' => 'Project Name', 'title' => 'Project Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'onkeyup' => $onkeyup, 'autocomplete' => 'off'),
+    'project_name' => array('placeholder' => 'Project Name', 'title' => 'Project Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'autocomplete' => 'off','onkeyup' => $onkeyup),
+    'project_folder' => array('placeholder' => 'Project Folder', 'title' => 'Project Folder', 'required' => 'yes', 'type' => 'text', 'value' => '', 'onkeyup' => $onkeyup2, 'autocomplete' => 'off'),
     'db_name' => array('placeholder' => 'Database Name', 'title' => 'Database Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'autocomplete' => 'off'),
     'db_user' => array('placeholder' => 'Database User', 'title' => 'Database User', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_user, 'autocomplete' => 'off'),
     'db_password' => array('placeholder' => 'Database Password', 'title' => 'Database Password', 'type' => 'password', 'value' => $ck_db_password, 'autocomplete' => 'off'),
@@ -44,21 +46,21 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
 
     //Make variables
 
-    $project_name = stripslashes($_POST['project_name']);
+    $project_folder = stripslashes($_POST['project_folder']);
     $db_name = stripslashes($_POST['db_name']);
     $test_db_name = 'mysql';
     $db_user = stripslashes($_POST['db_user']);
     $db_password = stripslashes($_POST['db_password']);
     $db_host = stripslashes($_POST['db_host']);
     $db_port = stripslashes($_POST['db_port']);
-    $folder_path = '../' . $project_name;
-    $config_sample_path = '../' . $project_name . '/sulata/includes/config-sample.php';
-    $config_path = '../' . $project_name . '/sulata/includes/config.php';
-    $magic_config_sample_path = '../' . $project_name . '/sulata/includes/magic-config-sample.php';
-    $magic_config_path = '../' . $project_name . '/sulata/includes/magic-config.php';
+    $folder_path = '../' . $project_folder;
+    $config_sample_path = '../' . $project_folder . '/sulata/includes/config-sample.php';
+    $config_path = '../' . $project_folder . '/sulata/includes/config.php';
+    $magic_config_sample_path = '../' . $project_folder . '/sulata/includes/magic-config-sample.php';
+    $magic_config_path = '../' . $project_folder . '/sulata/includes/magic-config.php';
 
-    $project_magic_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_name . '/_magic/login.php?';
-    $project_admin_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_name . '/_admin/login.php?';
+    $project_magic_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_folder . '/_magic/login.php?';
+    $project_admin_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_folder . '/_admin/login.php?';
     $db_dump_path = 'blank-project/db/magic.sql';
 
     //Set cookies for next use
@@ -71,7 +73,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
     //Check if folder exists
     $error = array();
     if (file_exists($folder_path)) {
-        array_push($error, sprintf(FOLDER_ALREADY_EXISTS, $project_name));
+        array_push($error, sprintf(FOLDER_ALREADY_EXISTS, $project_folder));
     }
     //Connect to database
     $link = mysqli_connect($db_host, $db_user, $db_password, $test_db_name, $db_port);
@@ -115,7 +117,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         suWriteFile($magic_config_path, $magic_config);
         //Write config
         $config = file_get_contents($config_sample_path);
-        $config = str_replace('#PROJECT_NAME#', $project_name, $config);
+        $config = str_replace('#PROJECT_FOLDER#', $project_folder, $config);
         $config = str_replace('#SESSION_PREFIX#', uniqid(), $config);
         $config = str_replace('#VERSION#', FRAMEWORK_VERSION, $config);
         $config = str_replace('#RELEASE_DATE#', RELEASE_DATE, $config);
@@ -136,11 +138,10 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         $sql = "CREATE DATABASE " . $db_name;
         mysqli_query($link, $sql);
         //Popuate db
-        $sql = "USE " . $project_name;
+        $sql = "USE " . $project_folder;
         mysqli_query($link, $sql);
         $db_dump = file_get_contents($db_dump_path);
-        $site_name = str_replace('_', ' ', $_POST['project_name']);
-        $db_dump = str_replace("#SITE_NAME#", urlencode(ucwords($site_name)), $db_dump);
+        $db_dump = str_replace("#SITE_NAME#", urlencode(stripslashes($_POST['project_name'])), $db_dump);
         $db_dump = str_replace("#SUPER_USER#", urlencode(SUPER_USER), $db_dump);
         $db_dump = str_replace("#SUPER_USER_LOGIN#", urlencode(SUPER_USER_LOGIN), $db_dump);
         $db_dump = str_replace("#SUPER_USER_PASSWORD#", suCrypt(SUPER_USER_PASSWORD), $db_dump);
@@ -165,7 +166,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
             }
         }
         //Finish project
-        //$js = "alert('" . sprintf(SUCCESS_MESSAGE, $project_name) . "');window.location.href='index.php?do=nothing;';top.window.location.href='" . $project_magic_location . "'";
+        //$js = "alert('" . sprintf(SUCCESS_MESSAGE, $project_folder) . "');window.location.href='index.php?do=nothing;';top.window.location.href='" . $project_magic_location . "'";
         $js = "parent.document.getElementById('suForm').style.display='none';";
         $js .= "parent.document.getElementById('error-area').innerHTML='';";
         $js .= "parent.document.getElementById('success-area').style.display='block';";

@@ -364,6 +364,9 @@ textarea.form-control{
 .zero-height{
     height:0px !important;
 }
-.fifty-height{
-    height:50px !important;
+.system-message{
+	padding: 1%;
+	background-color: #EEE;
+	min-height: 100px;
+	box-sizing: border-box;
 }

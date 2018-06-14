@@ -236,7 +236,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         sel = 'textbox';
         $('#name_' + id).val('Name');
         $('#type_' + id).val(sel);
-        $('#length_' + id).val('100');
+        $('#length_' + id).val('50');
         $('#width_' + id).val(defaultWidth);
         $('#show_' + id).prop('checked', true);
         $('#orderby_' + id).prop('checked', true);
@@ -590,7 +590,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
     //Disable all fields
     doDisableBuilderFields(arg, defaultWidth, defaultImageWidth, defaultImageHeight);
     if (v == 'textbox') {//Set Text length
-        $('#length_' + n).val('100');
+        $('#length_' + n).val('50');
         $('#default_' + n).val('');
         //--//
         $('#name_' + n).prop('disabled', false);

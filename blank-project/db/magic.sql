@@ -44,7 +44,7 @@ INSERT INTO `_settings` (`id`, `data`, `live`) VALUES
 (8, '{\"setting_title\":\"Allowed+File+Formats\",\"setting_key\":\"allowed_file_formats\",\"setting_value\":\"doc%2Cxls%2Cdocx%2Cxlsx%2Cppt%2Cpptx%2Cpdf%2Cgif%2Cjpg%2Cjpeg%2Cpng\",\"id\":\"8\",\"redirect\":\"\"}', 'Yes'),
 (9, '{\"setting_title\":\"Allowed+Picture+Formats\",\"setting_key\":\"allowed_picture_formats\",\"setting_value\":\"gif%2Cjpg%2Cjpeg%2Cpng\",\"id\":\"9\",\"redirect\":\"\"}', 'Yes'),
 (27, '{\"setting_title\": \"Toggle+Password\", \"setting_key\": \"toggle_password\", \"setting_value\": \"1\", \"redirect\": \"\"}', 'Yes'),
-(11, '{\"setting_title\":\"Site+Email\",\"setting_key\":\"site_email\",\"setting_value\":\""#ADMIN_LOGIN#\"}', 'Yes'),
+(11, '{\"setting_title\":\"Site+Email\",\"setting_key\":\"site_email\",\"setting_value\":\"#ADMIN_LOGIN#\"}', 'Yes'),
 (12, '{\"setting_title\":\"Site+URL\",\"setting_key\":\"site_url\",\"setting_value\":\"http%3A%2F%2Fwww.sulata.com.pk\"}', 'Yes'),
 (13, '{\"setting_title\":\"Employee+Image+Height\",\"setting_key\":\"employee_image_height\",\"setting_value\":\"150\"}', 'Yes'),
 (14, '{\"setting_title\":\"Employee+Image+Width\",\"setting_key\":\"employee_image_width\",\"setting_value\":\"100\"}', 'Yes'),
