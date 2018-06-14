@@ -1441,7 +1441,7 @@ if (!function_exists('suBuildField')) {
                 //Build label if required
                 if ($labelRequirement == 'Yes') {
                     if ($getSettings['toggle_password'] == '1') {
-                        $togglePassword = "<a title='" . PREVIEW_PASSWORD . "' href='javascript:;' onmousedown=\"doTogglePassword('" . $arr['Slug'] . "','password','" . CONFIRM_PASSWORD_POSTFIX . "')\" onmouseup=\"doTogglePassword('" . $arr['Slug'] . "','text','" . CONFIRM_PASSWORD_POSTFIX . "')\"><i class='fa fa-eye'></i></a>";
+                        $togglePassword = "<a title='" . PREVIEW_PASSWORD . "' href='javascript:;' onclick=\"doTogglePassword('" . $arr['Slug'] . "','" . CONFIRM_PASSWORD_POSTFIX . "')\"><i id=\"password-eye\" class='fa fa-eye'></i></a>";
                     } else {
                         $togglePassword = '';
                     }

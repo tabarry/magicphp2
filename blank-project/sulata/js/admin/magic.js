@@ -1469,13 +1469,18 @@ function doChangeTheme(arg) {
     remote.window.location.href = 'themes.php?theme=' + arg;
 }
 //Toggle password field
-function doTogglePassword(field, type, confirmPasswordPostfix) {
-    if (type == 'password') {
+function doTogglePassword(field, confirmPasswordPostfix) {
+    t = $('#' + field).prop('type');
+    if (t == 'password') {
         $('#' + field).prop('type', 'text');
         $('#' + field + confirmPasswordPostfix).prop('type', 'text');
+        $('#password-eye').removeClass('fa fa-eye');
+        $('#password-eye').addClass('fa fa-eye-slash');
     } else {
         $('#' + field).prop('type', 'password');
         $('#' + field + confirmPasswordPostfix).prop('type', 'password');
+        $('#password-eye').removeClass('fa fa-eye-slash');
+        $('#password-eye').addClass('fa fa-eye');
     }
 }
 //Inline field editing
