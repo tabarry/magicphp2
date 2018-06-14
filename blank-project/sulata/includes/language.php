@@ -76,7 +76,7 @@ define('QUICK_PICKS', 'Quick Picks:');
 define('CONFIRM_PASSWORD', 'Confirm Password:');
 define('CLICK_TO_SELECT', 'Click to select');
 define('CLEAR_FIELD', 'Clear field');
-define('PREVIEW_PASSWORD', 'Show password');
+define('PREVIEW_PASSWORD', 'Show/Hide Password');
 define('MANAGE', 'Manage');
 define('ADD', 'Add');
 define('SORT', 'Sort');
