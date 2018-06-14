@@ -56,7 +56,6 @@ function suRedirect(url) {
 //Disable submit button
 function suToggleButton(arg) {
     if (arg == 1) {
-
         if (parent.$('#suForm')) {
             parent.$("#suForm").submit(function (event) {
                 if (parent.$('#Submit')) {
@@ -139,7 +138,7 @@ function delById(id, warning) {
             $('#row_' + id + ' td').addClass('deleted-bg');
         }
 
-        if ($('#delchk_' + id)) {
+        if ($('#delchk_' + id).checked == false) {
             document.getElementById('delchk_' + id).checked = true;
         }
         return true;
@@ -320,13 +319,26 @@ function sleep(milliseconds) {
 }
 
 //Quick pick
-function doQuickPick(sourceVal, targetEle, errorMsg) {
+function doQuickPick(sourceVal, targetEle) {
     eleType = document.getElementById(targetEle).type;
     if (eleType == 'textarea' || eleType == 'text') {
         doPlaceAtCursor(targetEle, sourceVal);
-    } else {
-        alert(errorMsg);
     }
+}
+//Quick pick
+function doQuickPickClosest(sourceVal, arg) {
+    ele = $("textarea", $(arg).parent().parent()).attr('name');
+    var targetEle = $('textarea[name=' + ele + ']');
+    var start = targetEle.prop("selectionStart")
+    var end = targetEle.prop("selectionEnd")
+    var text = targetEle.val()
+    var before = text.substring(0, start)
+    var after = text.substring(end, text.length)
+    targetEle.val(before + sourceVal + after)
+    targetEle[0].selectionStart = targetEle[0].selectionEnd = start + sourceVal.length
+    targetEle.focus()
+    return false
+
 }
 //Place text at cursor point
 function doPlaceAtCursor(targetEle, newText) {
@@ -374,8 +386,204 @@ function suSave(submitButtonId, saveOnCtrlS) {
     }
 }
 //Resize Iframe to its content
- function doResizeIframe(obj) {
-     var newHeight =obj.contentWindow.document.body.scrollHeight;
-     newHeight=newHeight+20;
+function doResizeIframe(obj) {
+    var newHeight = obj.contentWindow.document.body.scrollHeight;
+    newHeight = newHeight + 20;
     obj.style.height = newHeight + 'px';
-  }
+}
+//Delete/Remove the nearest element
+function doRemoveTr(eleId, warning, hiddenDecrementField) {
+    if (warning != '') {
+        c = confirm(warning);
+        if (c == true) {
+            $('#' + eleId).remove();
+            if (hiddenDecrementField != '') {
+                //Decrement the hidden counter field
+                s = '_____size_' + hiddenDecrementField;
+                v = $('#' + s).val();
+                v = parseInt(v) - 1;
+                $('#' + s).val(v);
+            }
+        } else {
+            return false;
+        }
+    } else {
+        $('#' + eleId).remove();
+    }
+    doAddmoreIds('suForm', hiddenDecrementField, '-')
+}
+//Delete/Remove the nearest element
+function doRemoveClosestEle(eleType, arg, warning) {
+
+    if (warning != '') {
+        c = confirm(warning);
+        if (c == true) {
+            $(arg).closest(eleType).remove();
+        } else {
+            return false;
+        }
+    } else {
+        $(arg).closest(eleType).remove();
+    }
+}
+//Add more row
+
+function doAddMore(sourceForm) {
+    //Increase counter
+    _____size = parseInt($('#_____size_' + sourceForm).val());
+    _____size += 1;
+    $('#_____size_' + sourceForm).val(_____size);
+    //make variable for the content and replace old id with new valid unique id
+    var moreContent = urldecode($('#more-source-' + sourceForm).val());
+    moreContent = moreContent.replace(/_____x/g, "_" + _____size);
+    //Place content to placeholder
+    $('#more-destination-' + sourceForm).append(moreContent);
+}
+//Fill add more values
+
+function doFillAddMoreValues(jsonValues) {
+    //alert(jsonValues);
+    var obj = JSON.parse(jsonValues);
+    //obj = obj['institute'];
+    for (var x in obj) {
+        if (obj.hasOwnProperty(x)) {
+            // your code
+            //alert(obj.hasOwnProperty(x)[0]);
+        }
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+                alert(obj[key]);
+        }
+
+    }
+
+//    for (i = 0; i <= (document.suForm.elements.length) - 1; i++) {
+//        if (document.suForm.elements[i].name == 'institute[]') {
+//            document.suForm.elements[i].value = 'Hello';
+//        }
+//    }
+
+}
+function urldecode(url) {
+    return decodeURIComponent(url.replace(/\+/g, ' '));
+}
+
+//Convert to searchable dropdown
+function doChangeToSearchable(arg) {
+    $(arg).chosen();
+}
+
+//convert to autocomplete
+function doChangeToAutocomplete(arg, src) {
+
+    $(arg).autocomplete(
+            {source: src, minLength: 2}
+    );
+}
+//convert to autocomplete
+function doChangeToDateBox(date_format) {
+    //return false;
+    $('body').on('focus', ".dateBox", function () {
+        $(this).datepicker({
+            changeMonth: true,
+            changeYear: true
+        });
+        $(this).datepicker('option', 'yearRange', 'c-100:c+10');
+        $(this).datepicker('option', 'dateFormat', date_format);
+    });
+}
+//Date Picker
+function doDatePicker(date_format, arg) {
+    //alert('here');
+    //$(arg).datepicker();
+    //$("#date_____1").datepicker();
+        //$("#date_____1").datepicker();
+
+//    $(arg).datepicker('destroy').datepicker({changeMonth: true, changeYear: true, dateFormat: "yy-mm-dd", yearRange: "1900:+10", showOn: 'focus'}).focus();
+
+//    n = arg.name;
+//    $('input[name='+n+']').datepicker();
+//    $(arg).datepicker('destroy');
+//    $(arg).datepicker({
+//        changeMonth: true,
+//        changeYear: true
+//    });
+//    $(arg).datepicker('option', 'yearRange', 'c-100:c+10');
+//    $(arg).datepicker('option', 'dateFormat', date_format);
+}
+//Convert to HTML Area
+function doChangeToHTMLArea(arg) {
+
+    CKEDITOR.replace(arg, {
+        toolbar: [
+            {name: 'clipboard', groups: ['clipboard', 'undo'], items: ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']},
+            {name: 'editing', groups: ['find', 'selection', 'spellchecker'], items: ['Scayt']},
+            {name: 'links', items: ['Link', 'Unlink', 'Anchor']},
+            {name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar']},
+            {name: 'tools', items: ['Maximize']},
+            {name: 'document', groups: ['mode', 'document', 'doctools'], items: ['Source']},
+            {name: 'others', items: ['-']},
+            '/',
+            ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            {name: 'basicstyles', groups: ['basicstyles', 'cleanup'], items: ['Bold', 'Italic', 'Strike', '-', 'RemoveFormat']},
+            {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'], items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote']},
+            {name: 'styles', items: ['Styles', 'Format']},
+            {name: 'about', items: ['About']}
+        ]
+    });
+
+}
+//Count occurences of needle in haystack
+function doCountOccurences(haystack, needle) {
+    var occurence = 0;
+    for (i = 0; i <= haystack.length; i++) {
+        if (haystack[i] == needle) {
+            occurence = occurence + 1;
+
+        }
+
+    }
+    return occurence;
+}
+//Allow only integers
+function doOnlyIntegers() {
+    $(document).on("keypress", ".integer", function (evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        //9 = tab, 13 = enter, 45 = minus, 46 = decimal, 8 = backspace
+        if ((charCode < 48 || charCode > 57) && charCode != 9 && charCode != 13 && charCode != 8) {
+            //if ((evt.which < 48 || evt.which > 57) && evt.which != 9 && evt.which != 45 && evt.which != 8) {
+            evt.preventDefault();
+        }
+    });
+
+
+
+}
+//Allow only decimals
+function doOnlyDecimals() {
+    $(document).on("keypress", ".decimal", function (evt) {
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        //9 = tab, 13 = enter, 45 = minus, 46 = decimal, 8 = backspace
+        if ((charCode < 48 || charCode > 57) && charCode != 9 && charCode != 13 && charCode != 45 && charCode != 46 && charCode != 8) {
+            evt.preventDefault();
+        }
+
+    });
+}
+//Allow only integers
+function doOnlyIntegers2(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    //9 = tab, 13 = enter, 45 = minus, 46 = decimal, 8 = backspace
+    if ((charCode < 48 || charCode > 57) && charCode != 9 && charCode != 13 && charCode != 8) {
+        evt.preventDefault();
+    }
+}
+
+//Allow only decimals
+function doOnlyDecimals2(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    //9 = tab, 13 = enter, 45 = minus, 46 = decimal, 8 = backspace
+    if ((charCode < 48 || charCode > 57) && charCode != 9 && charCode != 13 && charCode != 45 && charCode != 46 && charCode != 8) {
+        evt.preventDefault();
+    }
+}

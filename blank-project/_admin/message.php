@@ -7,7 +7,6 @@ $showManageIcon = FALSE;
 
 $title = 'System Message';
 $h1 = $title;
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,8 +40,8 @@ $h1 = $title;
                     <div class="col-sm-10 content-area" id="working-area">
                         <!-- Add new -->
                         <?php if ($showManageIcon == TRUE) { ?>
-                                <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
-                            <?php } ?>
+                            <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
+                        <?php } ?>
                         <?php
                         include('includes/header.php');
                         ?>
@@ -53,7 +52,7 @@ $h1 = $title;
                         <div id="message-area">
                             <p></p>
                         </div>
-
+                        <div class="fifty-height"></div>
                         <p><?php
                             if (isset($_GET['msg'])) {
                                 echo $_GET['msg'];
@@ -68,6 +67,6 @@ $h1 = $title;
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

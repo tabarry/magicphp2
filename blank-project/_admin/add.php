@@ -3,6 +3,9 @@ include('../sulata/includes/config.php');
 include('../sulata/includes/language.php');
 include('../sulata/includes/functions.php');
 include('../sulata/includes/get-settings.php');
+//instantiate Add more counter
+$_SESSION[SESSION_PREFIX . 'add_more_counter'] = '';
+
 $showManageIcon = TRUE;
 //Check admin login.
 //If user is not logged in, send to login page.
@@ -12,6 +15,7 @@ $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 $mode = 'add';
 $table = suSegment(1);
+$tableSegment = suSegment(1);
 //Stop unauthorised add access
 $addAccess = suCheckAccess(suUnTablify($table), 'addables');
 $viewAccess = suCheckAccess(suUnTablify($table), 'viewables');
@@ -41,19 +45,24 @@ $numRows = $result['num_rows'];
 if ($numRows == 0) {
     suExit(INVALID_RECORD);
 }
+$result['result'] = suUnstrip($result['result']);
+
 $row = $result['result'][0];
-$id = suUnstrip($row['id']);
-$title = suUnstrip($row['title']);
-//$table = suUnstrip($row['slug']);
+$id = $row['id'];
+$title = $row['title'];
+
 $label_add = $row['label_add'];
 $label_update = $row['label_update'];
 $display = $row['display'];
 $save_for_later = $row['save_for_later'];
 
 $structure = $row['structure'];
-$structure = json_decode($structure, 1);
+//$structure= html_entity_decode($structure);
+//$structure = json_decode($structure, 1);
 //Create heading
 $h1 = 'Add ' . $title;
+//Required for date picker
+$date_format = $getSettings['date_format'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -73,6 +82,7 @@ $h1 = 'Add ' . $title;
             });
             //Set variable TRUE to save on CTRL + S
             var saveOnCtrlS = true;
+
         </script> 
 
 
@@ -87,7 +97,7 @@ $h1 = 'Add ' . $title;
                         <!-- Add new -->
                         <?php if ($_GET['overlay'] != 1) { ?>
                             <?php if ($showManageIcon == TRUE) { ?>
-                                <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
+                                <a title="<?php echo MANAGE . ' ' . $title; ?>" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
                             <?php } ?>
                         <?php } ?>
 
@@ -120,14 +130,29 @@ $h1 = 'Add ' . $title;
                                 <div class="form-group">
                                     <?php
                                     $uniqueArray = array();
-
+                                    $tabIndex = 0;
                                     foreach ($structure as $value) {
+                                        $tabIndex++;
+                                        $value['TabIndex'] = $tabIndex;
                                         if ($value['Type'] == 'hidden' || $value['Type'] == 'ip_address') {
                                             //Any actions desired at this point should be coded in this file
                                             if (file_exists('includes/custom/add-c.php')) {
                                                 include('includes/custom/add-c.php');
                                             }
                                             suBuildField($value, $mode);
+                                        } elseif ($value['Type'] == 'line_break') {
+                                            ?>
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 zero-height" id="data_div_<?php echo $value['Slug']; ?>">
+                                                <?php
+                                                suBuildField($value, $mode, $label_add);
+                                                //Any actions desired at this point should be coded in this file
+                                                if (file_exists('includes/custom/add-d.php')) {
+                                                    include('includes/custom/add-d.php');
+                                                }
+                                                ?>
+                                                <div>&nbsp;</div>
+                                            </div>
+                                            <?php
                                         } else {
                                             ?>
                                             <div class="col-xs-12 col-sm-12 col-md-<?php echo $value['Width']; ?> col-lg-<?php echo $value['Width']; ?>" id="data_div_<?php echo $value['Slug']; ?>">
@@ -159,7 +184,6 @@ $h1 = 'Add ' . $title;
 
                             <div class="clearfix"></div>
                             <div>&nbsp;</div>
-
                             <p class="pull-right">
                                 <?php
                                 //Build sorting field
@@ -178,21 +202,20 @@ $h1 = 'Add ' . $title;
                                 echo suInput('input', $arg);
 
                                 //Submit
-                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme');
-                                echo suInput('button', $arg, "<i class='fa fa-check'></i>", TRUE);
+                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme', 'title' => SUBMIT);
+                                echo suInput('button', $arg, $submitButton, TRUE);
 
                                 //If save for later
                                 if ($save_for_later == 'Yes') {
                                     echo ' ';
                                     $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme');
-                                    echo suInput('button', $arg, "<i class='fa fa-save'></i>", TRUE);
+                                    echo suInput('button', $arg, $saveButton, TRUE);
                                 }
                                 ?>   
 
                             </p>
                             <p>&nbsp;</p>
                         </form>
-
                         <script>
                             $("#suForm").parsley({"validationThreshold": 0});
                             //On modal window close, reset modal iframe url
@@ -212,12 +235,13 @@ $h1 = 'Add ' . $title;
                         }
                         ?>
                     </div>
+
                 </main>
                 <?php include('includes/sidebar.php'); ?>
             </div>
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

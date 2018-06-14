@@ -32,6 +32,10 @@ if ($do == 'logout') {
     $_SESSION[SESSION_PREFIX . 'user_theme'] = '';
     $_SESSION[SESSION_PREFIX . 'user_group'] = '';
     $_SESSION[SESSION_PREFIX . 'getSettings'] = '';
+    //Any actions desired at this point should be coded in this file
+    if (file_exists('includes/custom/login-c.php')) {
+        include('includes/custom/login-c.php');
+    }
     session_unset();
 }
 
@@ -39,7 +43,7 @@ if ($do == 'logout') {
 //Login
 if ($do == 'login') {
 
-   $sql = "SELECT id, " . suJsonExtract('data', 'name') . "," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'photo') . "," . suJsonExtract('data', 'theme') . "," . suJsonExtract('data', 'sound_settings') . "," . suJsonExtract('data', 'navigation_settings') . "," . suJsonExtract('data', 'user_group') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suStrip($_POST['email']) . "' AND " . suJsonExtract('data', 'password', FALSE) . "='" . suCrypt($_POST['password']) . "' AND " . suJsonExtract('data', 'status', FALSE) . "='" . suStrip('Active') . "' LIMIT 0,1";
+    $sql = "SELECT id, " . suJsonExtract('data', 'name') . "," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'photo') . "," . suJsonExtract('data', 'theme') . "," . suJsonExtract('data', 'sound_settings') . "," . suJsonExtract('data', 'navigation_settings') . "," . suJsonExtract('data', 'user_group') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "' AND " . suJsonExtract('data', 'password', FALSE) . "='" . suCrypt($_POST['password']) . "' AND " . suJsonExtract('data', 'status', FALSE) . "='" . suStrip('Active') . "' LIMIT 0,1";
 
     //Any actions desired at this point should be coded in this file
     if (file_exists('includes/custom/login-a.php')) {
@@ -47,6 +51,7 @@ if ($do == 'login') {
     }
 
     $result = suQuery($sql);
+    $result['result'] = suUnstrip($result['result']);
     $numRows = $result['num_rows'];
 
 
@@ -57,14 +62,18 @@ if ($do == 'login') {
         //set sessions
         $_SESSION[SESSION_PREFIX . 'admin_login'] = '1';
         $_SESSION[SESSION_PREFIX . 'user_id'] = $result['result'][0]['id'];
-        $_SESSION[SESSION_PREFIX . 'user_name'] = suUnstrip($result['result'][0]['name']);
-        $_SESSION[SESSION_PREFIX . 'user_email'] = suUnstrip($result['result'][0]['email']);
+        $_SESSION[SESSION_PREFIX . 'user_name'] = $result['result'][0]['name'];
+        $_SESSION[SESSION_PREFIX . 'user_email'] = $result['result'][0]['email'];
         $_SESSION[SESSION_PREFIX . 'user_photo'] = $result['result'][0]['photo'];
         $_SESSION[SESSION_PREFIX . 'user_theme'] = $result['result'][0]['theme'];
         $_SESSION[SESSION_PREFIX . 'user_sound'] = $result['result'][0]['sound_settings'];
         $_SESSION[SESSION_PREFIX . 'user_navigation'] = $result['result'][0]['navigation_settings'];
-        $_SESSION[SESSION_PREFIX . 'user_group'] = json_decode($result['result'][0]['user_group'],1);
+        $_SESSION[SESSION_PREFIX . 'user_group'] = $result['result'][0]['user_group'];
 
+        //Any actions desired at this point should be coded in this file
+        if (file_exists('includes/custom/login-b.php')) {
+            include('includes/custom/login-b.php');
+        }
         //Update IP in user table
         $sql = "UPDATE " . USERS_TABLE_NAME . " SET data= JSON_REPLACE(data,'$.ip','" . suStrip($_SERVER['REMOTE_ADDR']) . "') WHERE id='" . $_SESSION[SESSION_PREFIX . 'user_id'] . "'";
         suQuery($sql);
@@ -78,12 +87,12 @@ if ($do == 'login') {
         if ($_POST['redirect'] == '') {
             $goto = ADMIN_URL . '?sound=welcome';
         } else {
-            $goto =suDecrypt($_POST['redirect']);
+            $goto = suDecrypt($_POST['redirect']);
             //If refer set, go to referer
-            if(!strstr($goto,'?')){
-                $goto=$goto.'?sound=welcome';
-            }else{
-                $goto=$goto.'&sound=welcome';
+            if (!strstr($goto, '?')) {
+                $goto = $goto . '?sound=welcome';
+            } else {
+                $goto = $goto . '&sound=welcome';
             }
         }
 
@@ -111,7 +120,7 @@ if ($do == 'login') {
 
 //Retrieve
 if ($do == 'retrieve-password') {
-    $sql = "SELECT id," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'password') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suStrip($_POST['email']) . "'";
+    $sql = "SELECT id," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'password') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "'";
     //Any actions desired at this point should be coded in this file
     if (file_exists('includes/custom/login-b.php')) {
         include('includes/custom/login-b.php');
@@ -121,17 +130,17 @@ if ($do == 'retrieve-password') {
 
         //Insert usage log
         suMakeUsageLog('retrieve-password-success');
-
+        $result['result'] = suUnstrip($result['result']);
         $row = $result['result'][0];
         $email = file_get_contents('../sulata/mails/lost-password.html');
         $email = str_replace('#NAME#', 'Administrator', $email);
         $email = str_replace('#SITE_NAME#', $getSettings['site_name'], $email);
-        $email = str_replace('#EMAIL#', suUnstrip($row['email']), $email);
+        $email = str_replace('#EMAIL#', $row['email'], $email);
         $email = str_replace('#URL#', ADMIN_URL, $email);
-        $email = str_replace('#PASSWORD#', suDecrypt(suUnstrip($row['password'])), $email);
+        $email = str_replace('#PASSWORD#', suDecrypt($row['password']), $email);
         $subject = sprintf(LOST_PASSWORD_SUBJECT, $getSettings['site_name']);
         //Send mails
-        suMail(suUnstrip($row['email']), $subject, $email, $getSettings['site_name'], $getSettings['site_email'], TRUE);
+        suMail($row['email'], $subject, $email, $getSettings['site_name'], $getSettings['site_email'], TRUE);
 
 //Redirect
         suPrintJS("alert('" . LOST_PASSWORD_DATA_SENT . "');parent.suRedirect('" . ADMIN_URL . "login" . PHP_EXTENSION . "/');");
@@ -281,6 +290,6 @@ if ($do == 'retrieve-password') {
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

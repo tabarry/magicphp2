@@ -2,7 +2,7 @@
 
 /* MISC DEFINITIONS */
 define('MAGIC_TITLE', 'MAGIC PHP');
-define('MAGIC_VERSION', '#VERSION#');
+define('MAGIC_VERSION', '2.0');
 define('MAGIC_DEVELOPER', 'Sulata iSoft');
 define('MAGIC_DEVELOPER_URL', 'http://www.sulata.com.pk/');
 define('MAGIC_THEME', 'crimson');
@@ -42,5 +42,6 @@ $showSortingModuleArray = array('No' => 'Disable sorting module.', 'Yes' => 'Ena
 /* FIELDS TO REMOVE AT DATA ENTRY */
 $fieldsToRemove = array('');
 $fieldsToRemoveFromDownload = array('save_for_later_use');
+
 
 

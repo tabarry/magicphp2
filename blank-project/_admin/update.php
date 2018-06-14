@@ -3,18 +3,18 @@ include('../sulata/includes/config.php');
 include('../sulata/includes/language.php');
 include('../sulata/includes/functions.php');
 include('../sulata/includes/get-settings.php');
+
 $showManageIcon = TRUE;
 
 //Check admin login.
 //If user is not logged in, send to login page.
 checkAdminLogin();
 
-
 $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 $mode = 'update';
 $table = suSegment(1);
-
+$tableSegment = suSegment(1);
 $rid = suSegment(2);
 $s3 = suSegment(3);
 
@@ -61,13 +61,13 @@ $numRows = $result['num_rows'];
 if ($numRows == 0) {
     suExit(INVALID_RECORD);
 }
+$result['result'] = suUnstrip($result['result']);
 $row = $result['result'][0];
-$id = suUnstrip($row['id']);
-$title = suUnstrip($row['title']);
-//$table = suUnstrip($row['slug']);
-$label_add = suUnstrip($row['label_add']);
-$label_update = suUnstrip($row['label_update']);
-$display = suUnstrip($row['display']);
+$id = $row['id'];
+$title = $row['title'];
+$label_add = $row['label_add'];
+$label_update = $row['label_update'];
+$display = $row['display'];
 $saveForLater = $row['save_for_later'];
 
 
@@ -77,7 +77,7 @@ if (file_exists('includes/custom/update-b.php')) {
 }
 
 $structure = $row['structure'];
-$structure = json_decode($structure, 1);
+
 //Build sorting field
 array_push($structure, array('Name' => 'sortOrder', 'Slug' => 'sortOrder', 'Type' => 'hidden'));
 if ($duplicate == TRUE) {
@@ -99,12 +99,15 @@ $numRowsData = $resultData['num_rows'];
 if ($numRowsData == 0) {
     suExit(INVALID_RECORD);
 }
+$resultData['result'] = suUnstrip($resultData['result']);
+
 $rowData = $resultData['result'][0];
 $data_id = $rowData['id'];
 $data_data = $rowData['data'];
 
 $data = $data_data;
-$data = json_decode($data, 1);
+//$data = html_entity_decode($data);
+//$data = json_decode($data, 1);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,7 +139,7 @@ $data = json_decode($data, 1);
                     <div class="col-sm-10 content-area" id="working-area">
                         <!-- Add new -->
                         <?php if ($showManageIcon == TRUE) { ?>
-                            <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
+                            <a title="<?php echo MANAGE . ' ' . $title; ?>" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-table"></i></a>
                         <?php } ?>
                         <?php
                         include('includes/header.php');
@@ -149,7 +152,7 @@ $data = json_decode($data, 1);
                             <p></p>
                         </div>
                         <?php
-                        //Any actions desired at this point should be coded in this file
+//Any actions desired at this point should be coded in this file
                         if (file_exists('includes/custom/update-d.php')) {
                             include('includes/custom/update-d.php');
                         }
@@ -172,12 +175,15 @@ $data = json_decode($data, 1);
                                 <div class="form-group">
                                     <?php
                                     $uniqueArray = array();
+                                    $tabIndex = 0;
                                     foreach ($structure as $value) {
 
+                                        $tabIndex++;
+                                        $value['TabIndex'] = $tabIndex;
                                         if (is_array($data[$value['Slug']])) {
                                             $value = array_merge($value, array('_____value' => $data[$value['Slug']]));
                                         } else {
-                                            $value = array_merge($value, array('_____value' => suUnstrip($data[$value['Slug']])));
+                                            $value = array_merge($value, array('_____value' => $data[$value['Slug']]));
                                         }
 
                                         //$value = $rowData[];
@@ -195,6 +201,19 @@ $data = json_decode($data, 1);
                                                     include('includes/custom/update-f.php');
                                                 }
                                                 suBuildField($value, $mode);
+                                            } elseif ($value['Type'] == 'line_break') {
+                                                ?>
+                                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 zero-height" id="data_div_<?php echo $value['Slug']; ?>">
+                                                    <?php
+                                                    suBuildField($value, $mode, $label_add);
+                                                    //Any actions desired at this point should be coded in this file
+                                                    if (file_exists('includes/custom/add-d.php')) {
+                                                        include('includes/custom/add-d.php');
+                                                    }
+                                                    ?>
+                                                    <div>&nbsp;</div>
+                                                </div>
+                                                <?php
                                             } else {
                                                 ?>
                                                 <div class="col-xs-12 col-sm-12 col-md-<?php echo $value['Width']; ?> col-lg-<?php echo $value['Width']; ?>" id="data_div_<?php echo $value['Slug']; ?>">    
@@ -216,7 +235,7 @@ $data = json_decode($data, 1);
                                 </div>
 
                                 <?php
-                                //Any actions desired at this point should be coded in this file
+//Any actions desired at this point should be coded in this file
                                 if (file_exists('includes/custom/update-h.php')) {
                                     include('includes/custom/update-h.php');
                                 }
@@ -230,40 +249,40 @@ $data = json_decode($data, 1);
 
                             <p class="pull-right">
                                 <?php
-                                //ID in hidden
+//ID in hidden
                                 $arg = array('type' => 'hidden', 'name' => 'id', 'id' => 'id', 'value' => suCrypt($rid));
                                 echo suInput('input', $arg);
 
-                                //Redirect
+//Redirect
                                 if ($duplicate == TRUE) {
-                                    $redirect = ADMIN_URL . "manage" . PHP_EXTENSION . "/" . suTablify($table) . "/";
+                                    $redirect = ADMIN_URL . "manage" . PHP_EXTENSION . "/" . suTablify($tableSegment) . "/";
                                     $arg = array('type' => 'hidden', 'name' => 'redirect', 'id' => 'redirect', 'value' => $redirect);
                                 } else {
                                     if (suSegment(3) == 'profile') {
                                         $redirect = ADMIN_URL . "message" . PHP_EXTENSION . "?msg=" . PROFILE_UPDATE;
                                         $arg = array('type' => 'hidden', 'name' => 'redirect', 'id' => 'redirect', 'value' => $redirect);
                                     } else {
-                                        $redirect = ADMIN_URL . "manage" . PHP_EXTENSION . "/" . suTablify($table) . "/?" . $_SERVER['QUERY_STRING'];
+                                        $redirect = ADMIN_URL . "manage" . PHP_EXTENSION . "/" . suTablify($tableSegment) . "/?" . $_SERVER['QUERY_STRING'];
                                         $arg = array('type' => 'hidden', 'name' => 'redirect', 'id' => 'redirect', 'value' => $redirect);
                                     }
                                 }
 
                                 echo suInput('input', $arg);
 
-                                //Hidden to store save for later action
+//Hidden to store save for later action
                                 $arg = array('type' => 'hidden', 'name' => 'save_for_later_use', 'id' => 'save_for_later_use', 'value' => 'No');
                                 echo suInput('input', $arg);
 
-                                //Submit
-                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme');
-                                echo suInput('button', $arg, "<i class='fa fa-check'></i>", TRUE);
+//Submit
+                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme', 'title' => SUBMIT);
+                                echo suInput('button', $arg, $submitButton, TRUE);
 
-                                //If save for later
+//If save for later
                                 if ($saveForLater == 'Yes') {
                                     if ($data['save_for_later_use'] != 'No' || $duplicate != FALSE) {
                                         echo ' ';
                                         $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme');
-                                        echo suInput('button', $arg, "<i class='fa fa-save'></i>", TRUE);
+                                        echo suInput('button', $arg, $saveButton, TRUE);
                                     }
                                 }
                                 ?>   
@@ -284,7 +303,7 @@ $data = json_decode($data, 1);
 
                         </script>
                         <?php
-                        //Any actions desired at this point should be coded in this file
+//Any actions desired at this point should be coded in this file
                         if (file_exists('includes/custom/update-i.php')) {
                             include('includes/custom/update-i.php');
                         }
@@ -296,6 +315,6 @@ $data = json_decode($data, 1);
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

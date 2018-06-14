@@ -14,6 +14,8 @@ $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 //fetch the table name which comes in segment 1.
 $table = suSegment(1);
+$tableSegment = suSegment(1);
+
 //Stop unauthorised manage access
 $addAccess = suCheckAccess(suUnTablify($table), 'addables');
 $viewAccess = suCheckAccess(suUnTablify($table), 'viewables');
@@ -51,17 +53,17 @@ $numRows = $result['num_rows'];
 if ($numRows == 0) {
     suExit(INVALID_RECORD);
 }
+$result['result'] = suUnstrip($result['result']);
 $row = $result['result'][0];
-
-$id = suUnstrip($row['id']);
-$title = suUnstrip($row['title']);
-$saveForLater = suUnstrip($row['save_for_later']);
-$showFormOnManage = suUnstrip($row['show_form_on_manage']);
-$showSortingModule = suUnstrip($row['show_sorting_module']);
-if($showSortingModule=='Yes') {
+$id = $row['id'];
+$title = $row['title'];
+$saveForLater = $row['save_for_later'];
+$showFormOnManage = $row['show_form_on_manage'];
+$showSortingModule = $row['show_sorting_module'];
+if ($showSortingModule == 'Yes') {
     $sortAccess = suCheckAccess(suUnTablify($table), 'sortables');
 }
-$extrasqlOnView = html_entity_decode(suUnstrip($row['extrasql_on_view']));
+$extrasqlOnView = html_entity_decode($row['extrasql_on_view']);
 //Eval the string if $ in string
 if (stristr($extrasqlOnView, '$')) {
     eval("\$extrasqlOnView = \"$extrasqlOnView\";");
@@ -69,7 +71,8 @@ if (stristr($extrasqlOnView, '$')) {
 
 
 $result = $result['result'][0]['structure'];
-$structure = json_decode($result, 1);
+$structure = $result;
+
 //Instantiate variables
 $fields = array(); //Fields to display
 $searchBy = array(); //Fields to search by
@@ -84,11 +87,12 @@ $source = array(); //Array to hold source
 $miniStructure = array(); //Array to hold mini structure
 $compositeUnique = array(); //Array to hold composite uniques
 //Loop through the structure array to build fields to display in query
+$downloadableFields = ''; //Fields to be shown in downloadable files
 for ($i = 0; $i <= sizeof($structure) - 1; $i++) {
     if ($structure[$i]['Show'] == 'yes') {
-
         //Check data type as date
         if ($structure[$i]['Type'] == 'date') {
+            $downloadableFields .= " DATE_FORMAT(" . suJsonExtract('data', $structure[$i]['Slug'], FALSE) . ",'%d-%b-%Y') AS " . $structure[$i]['Slug'] . ',';
             //Push the field name in date array
             array_push($dates, $structure[$i]['Slug']);
             //Apply date format and build an extra aliased field to display date.
@@ -98,15 +102,19 @@ for ($i = 0; $i <= sizeof($structure) - 1; $i++) {
             $f .= suJsonExtract('data', $structure[$i]['Slug']) . ',';
             //If field type is attachment
         } elseif ($structure[$i]['Type'] == 'attachment_field') {
+            $downloadableFields .= " CONCAT('" . BASE_URL . "files/'," . suJsonExtract('data', $structure[$i]['Slug'], FALSE) . ') AS ' . $structure[$i]['Slug'] . ',';
             //Push the field name in $attachments array
             array_push($attachments, $structure[$i]['Slug']);
             $f .= suJsonExtract('data', $structure[$i]['Slug']) . ',';
             //If field type is picture
         } elseif ($structure[$i]['Type'] == 'picture_field') {
+            $downloadableFields .= " CONCAT('" . BASE_URL . "files/'," . suJsonExtract('data', $structure[$i]['Slug'], FALSE) . ') AS ' . $structure[$i]['Slug'] . ',';
+
             //Push the field name in $pictures array
             array_push($pictures, $structure[$i]['Slug']);
             $f .= suJsonExtract('data', $structure[$i]['Slug']) . ',';
         } else {
+            $downloadableFields .= suJsonExtract('data', $structure[$i]['Slug']) . ',';
             $f .= suJsonExtract('data', $structure[$i]['Slug']) . ',';
         }
         array_push($fields, $structure[$i]['Name']);
@@ -114,7 +122,7 @@ for ($i = 0; $i <= sizeof($structure) - 1; $i++) {
     //If the SearchBy structure is set to yes
     if ($structure[$i]['SearchBy'] == 'yes') {
         //Push the field name in searchBy array
-        array_push($searchBy, suUnstrip($structure[$i]['Name']));
+        array_push($searchBy, $structure[$i]['Name']);
         $sb .= $structure[$i]['Name'] . ' OR ';
     }
     //If the OrderBy structure is set to yes
@@ -133,11 +141,12 @@ for ($i = 0; $i <= sizeof($structure) - 1; $i++) {
         array_push($compositeUnique, suSlugifyStr($structure[$i]['Name'], '_'));
     }
     //Rebuild mini structure
-    $miniStructure[suSlugifyStr($structure[$i]['Name'], '_')] = array('name' => $structure[$i]['Name'], 'type' => $structure[$i]['Type'], 'length' => $structure[$i]['Length'], 'onchange' => suUnstrip($structure[$i]['OnChange']), 'onclick' => suUnstrip($structure[$i]['OnClick']), 'onkeyup' => suUnstrip($structure[$i]['OnKeyUp']), 'onkeypress' => suUnstrip($structure[$i]['OnKeyPress']), 'onblur' => suUnstrip($structure[$i]['OnBlur']));
+    $miniStructure[suSlugifyStr($structure[$i]['Name'], '_')] = array('name' => $structure[$i]['Name'], 'type' => $structure[$i]['Type'], 'length' => $structure[$i]['Length'], 'onchange' => $structure[$i]['OnChange'], 'onclick' => $structure[$i]['OnClick'], 'onkeyup' => $structure[$i]['OnKeyUp'], 'onkeypress' => $structure[$i]['OnKeyPress'], 'onblur' => $structure[$i]['OnBlur']);
 }
 
 //Substring to remove the last characters
 $f = substr($f, 0, -1);
+$downloadableFields = substr($downloadableFields, 0, -1);
 $sb = substr($sb, 0, -4);
 
 //Make Save for Later option
@@ -148,6 +157,7 @@ if ($saveForLater == 'Yes') {
 }
 //Make select statement. The $SqlFrom is also used in $sqlP below.
 $sqlSelect = "SELECT id,$f $saveForLaterSql "; //$f is the fields built above for sql
+$sqlSelectDl = "SELECT id,$downloadableFields $saveForLaterSql "; //$f is the fields built above for sql
 $sqlFrom = " FROM " . suUnTablify($table) . " WHERE live='Yes' $extrasqlOnView ";
 
 //Any actions desired at this point should be coded in this file
@@ -155,8 +165,8 @@ if (file_exists('includes/custom/manage-b.php')) {
     include('includes/custom/manage-b.php');
 }
 
-$sql = $sqlSelect . $sqlFrom;
-
+$sql = $sqlSelect . $sqlFrom; //For this page
+$sqlDl = $sqlSelectDl . $sqlFrom; //For download page
 
 
 
@@ -172,10 +182,10 @@ if (suSegment(2) == 'stream-csv' && $downloadAccessCSV == TRUE) {
 if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
     if ($getSettings['pdf_format'] == 'table') {
         $receivedSql = suDecrypt($_GET['s']);
-        suSqlToPDF($receivedSql, $fields, suUnTablify($table), $dates);
+        suSqlToPDF($receivedSql, $fields, suUnTablify($table), $pictures);
     } else {
         $receivedSql = suDecrypt($_GET['s']);
-        suSqlToPDF2($receivedSql, $fields, suUnTablify($table), $dates);
+        suSqlToPDF2($receivedSql, $fields, suUnTablify($table), $pictures);
     }
     exit;
 }
@@ -210,10 +220,10 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                     <div class="col-sm-10 content-area" id="working-area">
                         <!-- Add new -->
                         <?php if ($addAccess == TRUE) { ?>
-                            <a href="<?php echo ADMIN_URL; ?>add<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-plus"></i></a>
+                            <a title="<?php echo ADD . ' ' . $title; ?>" href="<?php echo ADMIN_URL; ?>add<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle"><i class="fa fa-plus"></i></a>
                         <?php } ?>
                         <?php if ($sortAccess == TRUE) { ?>
-                            <a href="<?php echo ADMIN_URL; ?>sort<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle2"><i class="fa fa-sort-alpha-asc"></i></a>
+                            <a title="<?php echo SORT . ' ' . $title; ?>" href="<?php echo ADMIN_URL; ?>sort<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/" class="btn btn-circle2"><i class="fa fa-sort-alpha-asc"></i></a>
                         <?php } ?>
                         <?php
                         include('includes/header.php');
@@ -228,8 +238,14 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                         //If the querystring contains the search parameter, build the WHERE condition for sql query
                         if ($_GET['q'] != '') {
                             //Build the $where variable
+                            $searchField = suSlugifyStr($_GET['s'], '_');
+
                             //The search string and searched data is to be converted to lower case to return match
-                            $where .= " AND lcase(" . suJsonExtract('data', suSlugifyStr($_GET['s'], '_'), FALSE) . ") LIKE '%" . suStrip(strtolower($_GET['q'])) . "%' ";
+                            if (in_array($searchField, $dates)) {//If date
+                                $where .= " AND lcase(" . suJsonExtract('data', suSlugifyStr($_GET['s'], '_'), FALSE) . ") = '" . suDate2Db(suStrip(strtolower($_GET['q']))) . "' ";
+                            } else {
+                                $where .= " AND lcase(" . suJsonExtract('data', suSlugifyStr($_GET['s'], '_'), FALSE) . ") LIKE '%" . suStrip(strtolower($_GET['q'])) . "%' ";
+                            }
                         }
 
                         //If query string does not contain 'start' parameter, set 'start' to 0.
@@ -257,7 +273,8 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                         //Get records from database.
                         //$sql was built at the start of the page.
                         //WHERE condition, sorting and pagination added to query at this point.
-                        $sql = "$sql $where $sort LIMIT " . $_GET['start'] . "," . $getSettings['page_size'];
+                        $sql = "$sql $where $sort LIMIT " . $_GET['start'] . "," . $getSettings['page_size']; //This page
+                        $sqlDl = "$sqlDl $where $sort LIMIT " . $_GET['start'] . "," . $getSettings['page_size']; //Download page
                         $result = suQuery($sql);
                         $numRows = $result['num_rows'];
 
@@ -307,15 +324,39 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                     $q = '';
                                                 }
 
-                                                $arg = array('type' => 'search', 'name' => 'q', 'id' => 'q_' . $searchField, 'autocomplete' => 'off', 'class' => 'form-control', 'placeholder' => 'Search by ' . suUnstrip($searchBy[$i]), 'title' => 'Search by ' . $searchBy[$i]);
+                                                //If date, show datepicker
+                                                if (in_array($searchField, $dates)) {
+                                                    $dateClass = ' dateBox';
+                                                } else {
+                                                    $dateClass = '';
+                                                }
+
+                                                $arg = array('type' => 'search', 'name' => 'q', 'id' => 'q_' . $searchField, 'autocomplete' => 'off', 'class' => 'form-control ' . $dateClass, 'placeholder' => 'Search by ' . $searchBy[$i], 'title' => 'Search by ' . $searchBy[$i]);
                                                 if ($_GET['s'] != '' && $_GET['s'] == $searchBy[$i]) {
                                                     $arg = array_merge($arg, array('value' => $_GET['q']));
                                                 }
                                                 echo suInput('input', $arg);
                                                 ?>
+                                                <?php
+                                                if (in_array($searchField, $dates)) {
+                                                    echo "
+                <script>
+                    $(function() {
+                        $( '#q_" . $searchField . "' ).datepicker({
+                            changeMonth: true,
+                            changeYear: true
+                        });
+                        $( '#q_" . $searchField . "' ).datepicker( 'option', 'yearRange', 'c-100:c+10' );
+                        $( '#q_" . $searchField . "' ).datepicker( 'option', 'dateFormat', '" . $getSettings['date_format'] . "' );
+                        $('#q_" . $searchField . "').datepicker('setDate', '" . $today . "' );                
+                    });
+                </script>
+                ";
+                                                }
+                                                ?>
                                                 <?php if ($_GET['s'] != '' && $_GET['s'] == $searchBy[$i]) {
                                                     ?>
-                                                    <div><i class="fa fa-angle-up color-gray"></i> <small class='color-gray'>Search by <?php echo suUnstrip($searchBy[$i]); ?> <i class="fa fa-angle-up color-gray"></i> <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/">Clear search.</a></small></div>
+                                                    <div><i class="fa fa-angle-up color-gray"></i> <small class='color-gray'>Search by <?php echo $searchBy[$i]; ?> <i class="fa fa-angle-up color-gray"></i> <a href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/">Clear search.</a></small></div>
 
                                                 <?php } ?>
                                             </div>
@@ -401,10 +442,12 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                             //Build table field headers
                                             for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
                                                 $tdType = $miniStructure[suSlugifyStr($fields[$i], '_')]['type'];
-                                                if ($tdType == 'integer' || $tdType == 'decimal' || $tdType == 'currency') {
+                                                if ($tdType == 'integer' || $tdType == 'decimal' || $tdType == 'currency' || $tdType == 'percentage') {
                                                     $thAlignClass = ' class="number-right" ';
+                                                } else {
+                                                    $thAlignClass = '" ';
                                                 }
-                                                $th .= '<th ' . $thAlignClass . ' style="width:' . $tdWidth . '%">' . suUnstrip($fields[$i]) . $thSpace . '</th>';
+                                                $th .= '<th ' . $thAlignClass . ' style="width:' . $tdWidth . '%">' . $fields[$i] . $thSpace . '</th>';
                                             }
                                             //Any actions desired at this point should be coded in this file
                                             if (file_exists('includes/custom/manage-d.php')) {
@@ -414,7 +457,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                             ?>
                                             <!-- delete -->
                                             <th style="width:10%">&nbsp;</th>
-                                            <?php if ($getSettings['multi_delete'] == 1 && $deleteAccess == TRUE) {//If multi delete allowed     ?>
+                                            <?php if ($getSettings['multi_delete'] == 1 && $deleteAccess == TRUE) {//If multi delete allowed        ?>
                                                 <th style="width:5%">
                                                     <div class="pretty p-switch size-110" id="pretty_check_bulk">
 
@@ -439,6 +482,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                     </thead>
                                     <tbody>
                                         <?php
+                                        $result['result'] = suUnstrip($result['result']);
                                         foreach ($result['result'] as $row) {
                                             $uid = RESERVED_TABLE_PREFEX . uniqid() . '_';
                                             ?>
@@ -459,6 +503,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                     $fld = suSlugifyStr($fields[$i], '_');
 
 
+
                                                     //If it is a date field, display the aliased field that shows date iin English
                                                     if (in_array($fld, $dates)) {
                                                         if (strstr($row[$fld], ' ')) {//If also has time
@@ -471,31 +516,27 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                             include('includes/custom/manage-f.php');
                                                         }
                                                         //If it is an attachment field, make hyperlink
-                                                    } elseif ((in_array($fld, $attachments)) && (file_exists(ADMIN_UPLOAD_PATH . suUnstrip($row[$fld])))) {
+                                                    } elseif ((in_array($fld, $attachments)) && (file_exists(ADMIN_UPLOAD_PATH . $row[$fld]))) {
 
-                                                        $td .= '<td><a target="_blank" href="' . UPLOAD_URL . suUnstrip($row[$fld]) . '">' . suUnMakeUploadPath(suUnstrip($row[$fld])) . '</a></td>';
+                                                        $td .= '<td><a target="_blank" href="' . UPLOAD_URL . $row[$fld] . '">' . suUnMakeUploadPath($row[$fld]) . '</a></td>';
                                                         //Any actions desired at this point should be coded in this file
                                                         if (file_exists('includes/custom/manage-g.php')) {
                                                             include('includes/custom/manage-g.php');
                                                         }
                                                         //If it is a picture field, display picture
-                                                    } elseif ((in_array($fld, $pictures)) && (suUnstrip($row[$fld]) != '') && (file_exists(ADMIN_UPLOAD_PATH . suUnstrip($row[$fld])))) {
-                                                        $path = base64_encode(UPLOAD_URL . suUnstrip($row[$fld]));
-                                                        $td .= '<td><a id="photo_' . $i . '" href="javascript:;" class="imgThumb" style="background:url(' . UPLOAD_URL . suUnstrip($row[$fld]) . ')" data-toggle="modal" data-target="#myModal" onclick="window.overlayFrame.location.href = \'' . ADMIN_URL . 'view-image.php?t=' . time() . '&path=' . $path . '\';"></a></td>';
+                                                    } elseif ((in_array($fld, $pictures)) && ($row[$fld] != '') && (file_exists(ADMIN_UPLOAD_PATH . $row[$fld]))) {
+                                                        $path = base64_encode(UPLOAD_URL . $row[$fld]);
+                                                        $td .= '<td><a id="photo_' . $i . '" href="javascript:;" class="imgThumb" style="background:url(' . UPLOAD_URL . $row[$fld] . ')" data-toggle="modal" data-target="#myModal" onclick="window.overlayFrame.location.href = \'' . ADMIN_URL . 'view-image.php?t=' . time() . '&path=' . $path . '\';"></a></td>';
                                                         //Any actions desired at this point should be coded in this file
                                                         if (file_exists('includes/custom/manage-h.php')) {
                                                             include('includes/custom/manage-h.php');
                                                         }
                                                     } else {
                                                         //If the column data is an array, show data as bullet points
-                                                        if (is_array(json_decode($row[$fld]))) {
-                                                            $row[$fld] = json_decode($row[$fld]);
-                                                            //Loop through the array to make bullet points
-                                                            $o = '';
-                                                            foreach ($row[$fld] as $value) {
-                                                                $o .= " <i class='fa fa-check'></i> " . suUnstrip($value);
-                                                            }
-                                                            $row[$fld] = $o;
+
+                                                        if (is_array($row[$fld])) {
+
+                                                            $row[$fld] = suMakeCheckBoxesFromArray($row[$fld]);
                                                             //Any actions desired at this point should be coded in this file
                                                             if (file_exists('includes/custom/manage-i.php')) {
                                                                 include('includes/custom/manage-i.php');
@@ -503,7 +544,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                         } else {
                                                             //If the column data is not empty, print the data as it is
                                                             if ($row[$fld] != 'null' && $row[$fld] != '') {
-                                                                $row[$fld] = suUnstrip($row[$fld]);
+                                                                $row[$fld] = $row[$fld];
                                                                 //Get onX events
 
 
@@ -552,7 +593,13 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                                     }
                                                                 }
                                                             } else {
-                                                                if ($miniStructure[$fld]['type'] == 'email') {
+                                                                if ($miniStructure[$fld]['type'] == 'password') {
+                                                                    $row[$fld] = suDecrypt($row[$fld]);
+                                                                    //Any actions desired at this point should be coded in this file
+                                                                    if (file_exists('includes/custom/manage-o.php')) {
+                                                                        include('includes/custom/manage-o.php');
+                                                                    }
+                                                                } elseif ($miniStructure[$fld]['type'] == 'email') {
                                                                     $row[$fld] = "<a href='mailto:" . $row[$fld] . "'>" . $row[$fld] . "</a>";
                                                                     //Any actions desired at this point should be coded in this file
                                                                     if (file_exists('includes/custom/manage-o.php')) {
@@ -579,8 +626,19 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                                     if (file_exists('includes/custom/manage-r.php')) {
                                                                         include('includes/custom/manage-r.php');
                                                                     }
+                                                                } elseif ($miniStructure[$fld]['type'] == 'percentage') {//If percentage then apply number format
+                                                                    if ($getSettings['format_percentage'] == 1) {
+                                                                        $row[$fld] = number_format($row[$fld], 2) . '<sup>%</sup> ';
+                                                                    } else {
+                                                                        $row[$fld] = $row[$fld] . '<sup>%</sup> ';
+                                                                    }
+                                                                    $align = " class='number-right'";
+                                                                    //Any actions desired at this point should be coded in this file
+                                                                    if (file_exists('includes/custom/manage-r.php')) {
+                                                                        include('includes/custom/manage-r.php');
+                                                                    }
                                                                 } else {
-                                                                    
+                                                                    $align = ''; //Reset position
                                                                 }
                                                                 $td .= '<td ' . $align . '>' . $j . $row[$fld] . '</td>';
                                                                 //Any actions desired at this point should be coded in this file
@@ -635,7 +693,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                                                     ?>
                                                 </td>
                                                 <!-- Multi-delete -->
-                                                <?php if ($getSettings['multi_delete'] == 1 && $deleteAccess == TRUE) {//If multi delete allowed       ?>
+                                                <?php if ($getSettings['multi_delete'] == 1 && $deleteAccess == TRUE) {//If multi delete allowed         ?>
                                                     <td>
                                                         <div class="pretty p-switch size-110" id="pretty_check_<?php echo $row['id']; ?>">
 
@@ -703,12 +761,12 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                         <div id="download-area">
                             <p class="pull-right">
                                 <?php if ($downloadAccessCSV == TRUE && $numRows > 0) { ?>
-                                    <a title="<?php echo DOWNLOAD_CSV; ?>" target="remote" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/stream-csv/?s=<?php echo suCrypt($sql); ?>" class="btn btn-theme"><i class="fa fa-file-excel-o"></i></a>
+                                    <a title="<?php echo DOWNLOAD_CSV; ?>" target="remote" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/stream-csv/?s=<?php echo suCrypt($sqlDl); ?>" class="btn btn-theme"><i class="fa fa-file-excel-o"></i></a>
 
                                 <?php } ?>
 
                                 <?php if ($downloadAccessPDF == TRUE && $numRows > 0) { ?>
-                                    <a title="<?php echo DOWNLOAD_PDF; ?>" target="remote" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/stream-pdf/?s=<?php echo suCrypt($sql); ?>" class="btn btn-theme"><i class="fa fa-file-pdf-o"></i></a>
+                                    <a title="<?php echo DOWNLOAD_PDF; ?>" target="remote" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/<?php echo $table; ?>/stream-pdf/?s=<?php echo suCrypt($sqlDl); ?>" class="btn btn-theme"><i class="fa fa-file-pdf-o"></i></a>
                                 <?php } ?>
                             </p>
                         </div>
@@ -716,7 +774,7 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
                         <div id="post-table-placeholder"></div>
                     </div>
                     <?php
-                    //Any actions desired at this point should be coded in this file
+//Any actions desired at this point should be coded in this file
                     if (file_exists('includes/custom/manage-y.php')) {
                         include('includes/custom/manage-y.php');
                     }
@@ -727,6 +785,6 @@ if (suSegment(2) == 'stream-pdf' && $downloadAccessPDF == TRUE) {
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

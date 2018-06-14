@@ -24,6 +24,21 @@ function doUid() {
     return s4() + s4() + '_' + s4() + '_' + s4() + '_' +
             s4() + '_' + s4() + s4() + s4();
 }
+//Function to select only 1 checkbox for field shown on save for later 
+function doSaveForLater(arg) {
+    //Make id of the required on save field
+    nextId = arg.id;
+    nextId = nextId.split('_');
+    nextId = nextId[1];
+    nextId = 'requiredsaveforlater_' + nextId;
+    if (arg.checked == true) {
+        $('#' + nextId).attr('disabled', false);
+    } else {
+        $('#' + nextId).prop('checked', false);
+        $('#' + nextId).attr('disabled', true);
+    }
+
+}
 
 //Change element's name and id
 var uid = 0;
@@ -215,6 +230,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
     doDisableBuilderFields(arg, defaultWidth, defaultImageWidth, defaultImageHeight);
 //--//
     $('#source_' + id).prop('disabled', true);
+    $('#requiredsaveforlater_' + id).prop('disabled', true);
     //Set Name
     if (val == 'name') {
         sel = 'textbox';
@@ -229,7 +245,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', false);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -251,7 +267,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#unique_' + id).prop('disabled', false);
         $('#compositeunique_' + id).prop('disabled', false);
         $('#onchange_' + id).prop('disabled', false);
@@ -277,7 +293,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', true);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -300,7 +316,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#unique_' + id).prop('disabled', false);
         $('#compositeunique_' + id).prop('disabled', false);
         $('#onchange_' + id).prop('disabled', false);
@@ -326,7 +342,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('Active');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', false);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -349,7 +365,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#unique_' + id).prop('disabled', false);
         $('#compositeunique_' + id).prop('disabled', false);
         $('#onchange_' + id).prop('disabled', false);
@@ -375,7 +391,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', false);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -398,7 +414,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#unique_' + id).prop('disabled', false);
         $('#compositeunique_' + id).prop('disabled', false);
         $('#onchange_' + id).prop('disabled', false);
@@ -421,7 +437,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', false);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -444,7 +460,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#onchange_' + id).prop('disabled', false);
         $('#onclick_' + id).prop('disabled', false);
         $('#onkeyup_' + id).prop('disabled', false);
@@ -467,7 +483,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).val('');
         $('#default_' + id).val('');
         $('#required_' + id).prop('checked', true);
-        $('#requiredsaveforlater_' + id).prop('checked', true);
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
         $('#unique_' + id).prop('checked', false);
         $('#compositeunique_' + id).prop('checked', false);
         $('#onchange_' + id).val('');
@@ -490,7 +506,7 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
         $('#extrasql_' + id).prop('disabled', false);
         $('#default_' + id).prop('disabled', false);
         $('#required_' + id).prop('disabled', false);
-        $('#requiredsaveforlater_' + id).prop('disabled', false);
+        $('#requiredsaveforlater_' + id).prop('disabled', true);
         $('#unique_' + id).prop('disabled', false);
         $('#compositeunique_' + id).prop('disabled', false);
         $('#onchange_' + id).prop('disabled', false);
@@ -506,6 +522,10 @@ function doQuickBuilderPicks(arg, val, defaultWidth, defaultImageWidth, defaultI
     } else {
         doResetBuilderPicks(arg, defaultWidth, defaultImageWidth, defaultImageHeight);
     }
+    if ($('#required_' + id).prop('checked') == true) {
+        $('#requiredsaveforlater_' + id).prop('disabled', false);
+    }
+
 }
 
 //Reset the magic rows
@@ -526,7 +546,7 @@ function doResetBuilderPicks(arg, defaultWidth, defaultImageWidth, defaultImageH
     $('#extrasql_' + id).val('');
     $('#default_' + id).val('');
     $('#required_' + id).prop('checked', false);
-    $('#requiredsaveforlater_' + id).prop('checked', false);
+    $('#requiredsaveforlater_' + id).prop('disabled', true);
     $('#unique_' + id).prop('checked', false);
     $('#compositeunique_' + id).prop('checked', false);
     $('#onchange_' + id).val('');
@@ -583,7 +603,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -609,7 +629,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -635,7 +655,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onkeyup_' + n).prop('disabled', false);
@@ -659,7 +679,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -685,7 +705,34 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
+        $('#unique_' + n).prop('disabled', false);
+        $('#compositeunique_' + n).prop('disabled', false);
+        $('#onchange_' + n).prop('disabled', false);
+        $('#onclick_' + n).prop('disabled', false);
+        $('#onkeyup_' + n).prop('disabled', false);
+        $('#onkeypress_' + n).prop('disabled', false);
+        $('#onblur_' + n).prop('disabled', false);
+        $('#readonlyadd_' + n).prop('disabled', false);
+        $('#readonlyupdate_' + n).prop('disabled', false);
+        $('#hideonupdate_' + n).prop('disabled', false);
+        $('#hideonadd_' + n).prop('disabled', false);
+    } else if (v == 'year') {//Set Year
+
+        $('#length_' + n).val('-100,+10');
+        $('#default_' + n).val('');
+        //--//
+        $('#name_' + n).prop('disabled', false);
+        $('#length_' + n).prop('disabled', false);
+        $('#width_' + n).prop('disabled', false);
+        $('#cssclass_' + n).prop('disabled', false);
+        $('#show_' + n).prop('disabled', false);
+        $('#orderby_' + n).prop('disabled', false);
+        $('#searchby_' + n).prop('disabled', false);
+        $('#extrasql_' + n).prop('disabled', false);
+        $('#default_' + n).prop('disabled', false);
+        $('#required_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -711,7 +758,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -761,7 +808,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onkeyup_' + n).prop('disabled', false);
@@ -785,7 +832,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onkeyup_' + n).prop('disabled', false);
@@ -809,7 +856,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -835,7 +882,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -861,7 +908,33 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
+        $('#unique_' + n).prop('disabled', false);
+        $('#compositeunique_' + n).prop('disabled', false);
+        $('#onchange_' + n).prop('disabled', false);
+        $('#onclick_' + n).prop('disabled', false);
+        $('#onkeyup_' + n).prop('disabled', false);
+        $('#onkeypress_' + n).prop('disabled', false);
+        $('#onblur_' + n).prop('disabled', false);
+        $('#readonlyadd_' + n).prop('disabled', false);
+        $('#readonlyupdate_' + n).prop('disabled', false);
+        $('#hideonupdate_' + n).prop('disabled', false);
+        $('#hideonadd_' + n).prop('disabled', false);
+    } else if (v == 'percentage') {//Percentage
+        $('#length_' + n).val('');
+        $('#default_' + n).val('');
+        //--//
+        $('#name_' + n).prop('disabled', false);
+        $('#length_' + n).prop('disabled', false);
+        $('#width_' + n).prop('disabled', false);
+        $('#cssclass_' + n).prop('disabled', false);
+        $('#show_' + n).prop('disabled', false);
+        $('#orderby_' + n).prop('disabled', false);
+        $('#searchby_' + n).prop('disabled', false);
+        $('#extrasql_' + n).prop('disabled', false);
+        $('#default_' + n).prop('disabled', false);
+        $('#required_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -886,7 +959,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onkeyup_' + n).prop('disabled', false);
@@ -909,7 +982,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onkeyup_' + n).prop('disabled', false);
@@ -934,7 +1007,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -960,7 +1033,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -970,6 +1043,35 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#onblur_' + n).prop('disabled', false);
         $('#readonlyadd_' + n).prop('disabled', false);
         $('#readonlyupdate_' + n).prop('disabled', false);
+        $('#hideonupdate_' + n).prop('disabled', false);
+        $('#hideonadd_' + n).prop('disabled', false);
+//===
+    } else if (v == 'add_more_section') {//dropdown from db
+        $('#length_' + n).val('');
+        $('#default_' + n).val('');
+        $('#width_' + n).val('12');
+        //--//
+        $('#name_' + n).prop('disabled', false);
+        $('#length_' + n).prop('disabled', false);
+        $('#cssclass_' + n).prop('disabled', false);
+        $('#width_' + n).prop('disabled', false);
+        $('#show_' + n).prop('disabled', true);
+        $('#orderby_' + n).prop('disabled', true);
+        $('#searchby_' + n).prop('disabled', true);
+        $('#source_' + n).prop('disabled', false);
+        $('#extrasql_' + n).prop('disabled', true);
+        $('#default_' + n).prop('disabled', true);
+        $('#required_' + n).prop('disabled', true);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
+        $('#unique_' + n).prop('disabled', true);
+        $('#compositeunique_' + n).prop('disabled', true);
+        $('#onchange_' + n).prop('disabled', true);
+        $('#onclick_' + n).prop('disabled', true);
+        $('#onkeyup_' + n).prop('disabled', true);
+        $('#onkeypress_' + n).prop('disabled', true);
+        $('#onblur_' + n).prop('disabled', true);
+        $('#readonlyadd_' + n).prop('disabled', true);
+        $('#readonlyupdate_' + n).prop('disabled', true);
         $('#hideonupdate_' + n).prop('disabled', false);
         $('#hideonadd_' + n).prop('disabled', false);
 //===
@@ -988,7 +1090,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -1014,7 +1116,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -1040,7 +1142,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1058,7 +1160,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1077,7 +1179,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1096,7 +1198,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1114,7 +1216,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1134,7 +1236,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1153,7 +1255,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1173,7 +1275,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1192,7 +1294,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
@@ -1211,7 +1313,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#extrasql_' + n).prop('disabled', false);
         $('#default_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#unique_' + n).prop('disabled', false);
         $('#compositeunique_' + n).prop('disabled', false);
         $('#onchange_' + n).prop('disabled', false);
@@ -1231,7 +1333,7 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#width_' + n).prop('disabled', false);
         $('#extrasql_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onblur_' + n).prop('disabled', false);
@@ -1247,11 +1349,38 @@ function doSetAttr(arg, defaultWidth, defaultImageWidth, defaultImageHeight) {
         $('#width_' + n).prop('disabled', false);
         $('#extrasql_' + n).prop('disabled', false);
         $('#required_' + n).prop('disabled', false);
-        $('#requiredsaveforlater_' + n).prop('disabled', false);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
         $('#onchange_' + n).prop('disabled', false);
         $('#onclick_' + n).prop('disabled', false);
         $('#onblur_' + n).prop('disabled', false);
     } else if (v == 'separator') {//Separator
+        $('#length_' + n).val('');
+        $('#cssclass_' + n).val('');
+        //--//
+        $('#name_' + n).prop('disabled', false);
+        $('#length_' + n).prop('disabled', false);
+        $('#width_' + n).prop('disabled', false);
+        $('#width_' + n).prop('selectedIndex', 11);
+        $('#cssclass_' + n).prop('disabled', false);
+        $('#show_' + n).prop('disabled', false);
+        $('#orderby_' + n).prop('disabled', true);
+        $('#searchby_' + n).prop('disabled', true);
+        $('#extrasql_' + n).prop('disabled', true);
+        $('#default_' + n).prop('disabled', true);
+        $('#required_' + n).prop('disabled', true);
+        $('#requiredsaveforlater_' + n).prop('disabled', true);
+        $('#unique_' + n).prop('disabled', true);
+        $('#compositeunique_' + n).prop('disabled', true);
+        $('#onchange_' + n).prop('disabled', true);
+        $('#onclick_' + n).prop('disabled', true);
+        $('#onkeyup_' + n).prop('disabled', true);
+        $('#onkeypress_' + n).prop('disabled', true);
+        $('#onblur_' + n).prop('disabled', true);
+        $('#readonlyadd_' + n).prop('disabled', true);
+        $('#readonlyupdate_' + n).prop('disabled', true);
+        $('#hideonupdate_' + n).prop('disabled', false);
+        $('#hideonadd_' + n).prop('disabled', false);
+    } else if (v == 'line_break') {//Line Break
         $('#length_' + n).val('');
         $('#cssclass_' + n).val('');
         //--//
@@ -1496,4 +1625,63 @@ function doDelAll() {
         }
 
     }
+}
+//Add more rows
+function doAddMore(parentDestination, remoteText) {
+    $(remoteText).insertBefore("#" + parentDestination);
+}
+//Remove fakepath
+function doStripFakepath(fakePath) {
+    fakePath = fakePath.split('\\');
+    size = fakePath.length - 1;
+    return fakePath = fakePath[size];
+}
+//Assign IDs to add_more elements
+function doAddmoreIds(frmName, sourceForm, plusMinus) {
+    d = document.forms[frmName];
+    s = '_____size_' + sourceForm;
+    f = sourceForm + '_____';
+    //Get element number of s
+    for (i = 0; i < d.elements.length; i++) {
+        if (d.elements[i].id.indexOf(s) != -1) {
+            sElement = i;
+            break;
+        }
+    }
+    //First element's name
+    for (i = 0; i < d.elements.length; i++) {
+        if (d.elements[i].id.indexOf(f) != -1) {
+            firstElement = d.elements[i].id;
+            break;
+        }
+    }
+    j = 0;
+    for (i = 0; i < d.elements.length; i++) {
+        if (d.elements[i].id.indexOf(f) != -1) {
+            newElement = d.elements[i].id;
+            if (newElement == firstElement) {
+                j = j + 1;
+            }
+            newId = d.elements[i].id.split(f);
+            newId = newId[1];
+            newId = newId.split('_____[]');
+            newId = newId[0];
+
+            //d.elements[i].id = newId + '_' + j;
+            if (d.elements[i].type == 'checkbox') {
+                d.elements[i].name = newId + '_____' + j + '[]';
+            } else {
+                d.elements[i].name = newId + '_____' + j;
+            }
+        }
+    }
+    v = $('#' + s).val();
+    v = parseInt(v) + 1;
+    $('#' + s).val(v);
+    if (plusMinus == '-') {
+        v = $('#' + s).val();
+        v = parseInt(v) - 1;
+        $('#' + s).val(v);
+    }
+
 }

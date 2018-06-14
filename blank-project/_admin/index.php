@@ -4,7 +4,6 @@ include('../sulata/includes/language.php');
 include('../sulata/includes/functions.php');
 include('../sulata/includes/get-settings.php');
 $showManageIcon = FALSE;
-
 //Check admin login.
 //If user is not logged in, send to login page.
 checkAdminLogin();
@@ -66,7 +65,7 @@ if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
                                         <h4>Line Chart</h4>
                                         <?php
                                         $labelsArray = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80","50","70");
+                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80", "10", "30");
                                         $title = urlencode("Sales in Millions");
                                         $sizeArray = array('90%', '90%');
                                         $labelsArray = urlencode(json_encode($labelsArray));
@@ -79,9 +78,9 @@ if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
                                     <!-- Pie Chart -->
                                     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
                                         <h4>Pie Chart</h4>
-                                         <?php
+                                        <?php
                                         $labelsArray = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80");
+                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80", "10", "30");
                                         $title = urlencode("Sales in Millions");
                                         $sizeArray = array('90%', '90%');
                                         $labelsArray = urlencode(json_encode($labelsArray));
@@ -96,7 +95,7 @@ if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
                                         <h4>Bar Chart</h4>
                                         <?php
                                         $labelsArray = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80");
+                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80", "10", "30");
                                         $title = urlencode("Sales in Millions");
                                         $sizeArray = array('90%', '90%');
                                         $labelsArray = urlencode(json_encode($labelsArray));
@@ -109,9 +108,9 @@ if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
                                     <!-- Pie Chart -->
                                     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                         <h4>Horizontal Bar Chart</h4>
-                                         <?php
+                                        <?php
                                         $labelsArray = array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80");
+                                        $dataArray = array("10", "60", "20", "40", "30", "50", "70", "90", "100", "80", "10", "30");
                                         $title = urlencode("Sales in Millions");
                                         $sizeArray = array('90%', '90%');
                                         $labelsArray = urlencode(json_encode($labelsArray));
@@ -131,6 +130,6 @@ if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

@@ -31,7 +31,19 @@ if (!function_exists('suInclude')) {
     }
 
 }
+/* remove element from array */
+if (!function_exists('suRemoveFromArray')) {
 
+    function suRemoveFromArray($haystack, $needle) {
+        foreach ($haystack as $key => $value) {
+            if (!in_array($key, $needle)) {
+                $d[$key] = $value;
+            }
+        }
+        return $d;
+    }
+
+}
 /* check referrer */
 if (!function_exists('suCheckRef')) {
 
@@ -217,33 +229,81 @@ if (!function_exists('suExit')) {
     }
 
 }
+/* Strip $_POST */
+if (!function_exists('suPost')) {
+
+    function suPost($post) {
+        return suStrip($_POST[$post]);
+    }
+
+}
+/* BR to NL, reverse of nl2br() */
+if (!function_exists('br2nl')) {
+
+    function br2nl($string) {
+        return preg_replace("/<br[^>]*>\s*\r*\n*/is", "\n", $string);
+    }
+
+}
+
+
 /* Strip */
 if (!function_exists('suStrip')) {
 
     function suStrip($str, $titleCase = FALSE) {
-        if ($titleCase == TRUE) {
-            $str = suTitleCase($str);
+        $str = addslashes($str);
+//        $str = str_replace("\r\n", '~r~n', $str);
+//        $str = str_replace("\r", '~r', $str);
+//        $str = str_replace("\n", '~n', $str);
+        //$str = nl2br($str);
+        if (is_array($str)) {
+
+            $s = array();
+            foreach ($str as $key => $value) {
+                $s[$key] = suStrip($value);
+            }
+            return $s;
+        } else {
+            if ($titleCase == TRUE) {
+                $str = suTitleCase($str);
+            }
+            $str = str_replace('&', '~`~', $str);
+            $str = urlencode(trim($str));
+            return $str;
         }
-        $str = str_replace('&', '~`~', $str);
-        $str = urlencode(trim($str));
-        return $str;
     }
 
 }
+
 /* Unstrip */
 if (!function_exists('suUnstrip')) {
 
     function suUnstrip($str) {
-        $str = htmlspecialchars(urldecode($str));
-
-        if (LOCAL == TRUE) {
-            $str = str_replace(WEB_URL, LOCAL_URL, $str);
+        if (is_array($str)) {
+            $s = array();
+            foreach ($str as $key => $value) {
+                $s[$key] = suUnstrip($value);
+            }
+            return $s;
         } else {
-            $str = str_replace(LOCAL_URL, WEB_URL, $str);
-        }
-        $str = str_replace('~`~', '&', $str);
+            //If contains JSON array
+            if (is_array(json_decode($str, 1))) {
+                $arr = json_decode($str, 1);
+                return suUnstrip($arr);
+            } else {
+                $str = htmlspecialchars(urldecode($str));
+            }
 
-        return $str;
+            if (LOCAL == TRUE) {
+                $str = str_replace(WEB_URL, LOCAL_URL, $str);
+            } else {
+                $str = str_replace(LOCAL_URL, WEB_URL, $str);
+            }
+            $str = str_replace('~`~', '&', $str);
+            //$str = html_entity_decode(br2nl($str));
+            $str = stripslashes($str);
+            return $str;
+        }
     }
 
 }
@@ -355,7 +415,7 @@ if (!function_exists('suSearchableDropdown')) {
 /* form dropdown */
 if (!function_exists('suDropdown')) {
 
-    function suDropdown($name, $options, $selected = '', $extra = '') {
+    function suDropdown($name, $options, $selected = '', $extra = '', $id = FALSE) {//Pass id if element id needs to be different from name 
         foreach ($options as $key => $value) {
             $o[suUnstrip($key)] = suUnstrip($value);
         }
@@ -370,7 +430,12 @@ if (!function_exists('suDropdown')) {
 
             $opt .= "<option value=\"" . suUnstrip($key) . "\" $sel>" . suUnstrip($val) . "</option>\n";
         }
-        return "<select name=\"" . $name . "\" id=\"" . $name . "\" $extra>" . $opt . "</select>";
+        if ($id == FALSE) {
+            $id = $name;
+        } else {
+            $id = $id;
+        }
+        return "<select name=\"" . $name . "\" id=\"" . $id . "\" $extra>" . $opt . "</select>";
         ;
     }
 
@@ -378,9 +443,9 @@ if (!function_exists('suDropdown')) {
 /* form radio */
 if (!function_exists('suRadio')) {
 
-    function suRadio($name, $options, $checked, $extra = '', $type) {
+    function suRadio($name, $options, $checked, $extra = '', $type, $id = FALSE) {
         foreach ($options as $key => $value) {
-            $o[suUnstrip($key)] = suUnstrip($value);
+            $o[suUnstrip($key)] = trim(suUnstrip($value));
         }
         $options = $o;
         if ($type == 'regular') {
@@ -391,7 +456,9 @@ if (!function_exists('suRadio')) {
         $rd = '';
         $arg = '';
         foreach ($extra as $key => $value) {
-            $arg .= $key . "='" . $value . "' ";
+            if ($key != 'value') {//Add by Tahir as value was populating as array on update page
+                $arg .= $key . "='" . $value . "' ";
+            }
         }
         for ($i = 0; $i <= sizeof($options) - 1; $i++) {
             $options[$i] = trim($options[$i]);
@@ -400,10 +467,15 @@ if (!function_exists('suRadio')) {
             } else {
                 $check = '';
             }
+            if ($id == FALSE) {
+                $id = $name;
+            } else {
+                $id = $id;
+            }
 
             $rd .= '
                 <div class="pretty ' . $type . ' size-110">
-                    <input ' . $arg . ' ' . $check . ' type="radio" name="' . $name . '" id="' . $name . '" value="' . $options[$i] . '"/>
+                    <input ' . $arg . ' ' . $check . ' type="radio" name="' . $name . '" id="' . $id . '" value="' . $options[$i] . '"/>
                     <div class="state p-warning">
                         <label>' . $options[$i] . '</label>
                     </div>
@@ -419,10 +491,10 @@ if (!function_exists('suRadio')) {
 /* form checkbox */
 if (!function_exists('suCheckbox')) {
 
-    function suCheckbox($name, $options, $checked, $extra = '', $type) {
+    function suCheckbox($name, $options, $checked, $extra = '', $type, $id = FALSE) {
 
         foreach ($options as $key => $value) {
-            $o[suUnstrip($key)] = suUnstrip($value);
+            $o[suUnstrip($key)] = trim(suUnstrip($value));
         }
         $options = $o;
         if ($type == 'regular') {
@@ -442,16 +514,33 @@ if (!function_exists('suCheckbox')) {
                 $arg .= $key . "='" . $value . "' ";
             }
         }
+
         for ($i = 0; $i <= sizeof($options) - 1; $i++) {
+
             $x = $options[$i];
-            if (in_array($options[$i], $checked)) {
-                $check = 'checked="checked"';
+
+            if (is_array($checked)) {
+                if (in_array($x, $checked)) {
+                    $check = 'checked="checked"';
+                } else {
+                    $check = '';
+                }
             } else {
-                $check = '';
+                if (trim($x) == trim($checked)) {
+                    $check = 'checked="checked"';
+                } else {
+                    $check = '';
+                }
+            }
+
+            if ($id == FALSE) {
+                $id = $name;
+            } else {
+                $id = $id;
             }
             $rd .= '
                 <div class="pretty ' . $type . ' size-110">
-                    <input ' . $arg . ' ' . $check . ' type="checkbox" name="' . $name . '" id="' . $name . '" value="' . $options[$i] . '"  />
+                    <input ' . $arg . ' ' . $check . ' type="checkbox" name="' . $name . '" id="' . $id . '" value="' . $options[$i] . '"  />
                     <div class="state p-warning">
                         <label>' . $options[$i] . '</label>
                     </div>
@@ -466,7 +555,6 @@ if (!function_exists('suCheckbox')) {
 /* Print Array */
 if (!function_exists('print_array')) {
 
-//Tag name, html, $attributes,$has ending tag
     function print_array($array) {
         echo '
 <pre>';
@@ -583,7 +671,6 @@ if (!function_exists('suCheckAccess')) {
         $groupWhere = suJsonExtract('data', 'group_title', FALSE);
         $permission_groups = $_SESSION[SESSION_PREFIX . 'user_group'];
 
-        //$permission_groups = array('People', 'Cities');
         $groups = '';
         for ($i = 0; $i < sizeof($permission_groups); $i++) {
             $groups .= " " . $groupWhere . "='" . suStrip($permission_groups[$i]) . "' OR ";
@@ -679,6 +766,7 @@ if (!function_exists('suCheckAccess')) {
             'csv_downloadables' => $csv_downloadables,
             'pdf_downloadables' => $pdf_downloadables,
         );
+
         //Debug action
         if ($debug == TRUE) {
             print_array($group_permissions);
@@ -1174,6 +1262,7 @@ if (!function_exists('suMail')) {
 if (!function_exists('suSqlToCSV')) {
 
     function suSqlToCSV($sql, $fields, $outputFileName) {
+        global $fieldsToRemoveFromDownload;
         $outputFileName = $outputFileName . '.csv';
         $headerArray = array();
         for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
@@ -1185,15 +1274,16 @@ if (!function_exists('suSqlToCSV')) {
         $output = fopen('php://output', 'w');
         fputcsv($output, $headerArray);
         $result = suQuery($sql);
-
+        $result['result'] = suUnstrip($result['result']);
         foreach ($result['result'] as $row) {
             $data = array();
             foreach ($row as $key => $value) {
-                if ($key != 'id') {
-                    if (is_array(json_decode($value))) {
-                        array_push($data, html_entity_decode(suUnstrip($value)));
+                if ($key != 'id' && (!in_array($key, $fieldsToRemoveFromDownload))) {
+                    if (is_array($value)) {
+                        //array_push($data, html_entity_decode($value));
+                        array_push($data, json_encode($value));
                     } else {
-                        array_push($data, suUnstrip($value));
+                        array_push($data, $value);
                     }
                 }
             }
@@ -1205,7 +1295,8 @@ if (!function_exists('suSqlToCSV')) {
 /* Download as PDF */
 if (!function_exists('suSqlToPDF')) {
 
-    function suSqlToPDF($sql, $fields, $outputFileName, $dateArray) {
+    function suSqlToPDF($sql, $fields, $outputFileName, $pictureArray) {
+
         global $getSettings;
         //Make field names
         for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
@@ -1216,6 +1307,7 @@ if (!function_exists('suSqlToPDF')) {
         $title = ucwords(str_replace('_', ' ', $outputFileName)); //Title of the sheet
         $outputFileName = $outputFileName . '.pdf'; //Name of the file to download
         $resultPdf = suQuery($sql);
+        $resultPdf['result'] = suUnstrip($resultPdf['result']);
         $resultPdf = $resultPdf['result'];
         $tbl = '';
         $tbl .= '<table style="width:100%;" cellspacing="0">';
@@ -1235,10 +1327,22 @@ if (!function_exists('suSqlToPDF')) {
             $tbl .= '<tr><td ' . $tdStyle . '>' . $cnt . '. </td>';
             for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
                 $fld = suSlugifyStr($fields[$i], '_');
-                if (in_array($fld, $dateArray)) {
-                    $tbl .= '<td ' . $tdStyle2 . '>' . suUnstrip($rowPdf[$fld . '2']) . '</td>';
+                if (in_array($fld, $pictureArray)) {
+                    $imagePath = $rowPdf[$fld];
+                    $imageSize = getimagesize($imagePath);
+                    $imageWidth = $imageSize[0];
+                    $imageHeight = $imageSize[1];
+                    $imageRatio = $imageWidth / $imageHeight;
+                    $newImageWidth = $getSettings['pdf1_image_height'];
+                    $newImageHeight = round($getSettings['pdf1_image_height'] / $imageRatio);
+
+                    $tbl .= '<td ' . $tdStyle2 . '><img style="border: 2px solid #DDD;" width="' . $newImageWidth . '" height="' . $newImageHeight . '" src="' . $imagePath . '"/></td>';
                 } else {
-                    $tbl .= '<td ' . $tdStyle2 . '>' . suUnstrip($rowPdf[$fld]) . '</td>';
+                    if (is_array($rowPdf[$fld])) {
+                        $tbl .= '<td ' . $tdStyle2 . '>' . json_encode($rowPdf[$fld]) . '</td>';
+                    } else {
+                        $tbl .= '<td ' . $tdStyle2 . '>' . $rowPdf[$fld] . '</td>';
+                    }
                 }
             }
             $tbl .= '</tr>';
@@ -1321,7 +1425,7 @@ if (!function_exists('suSqlToPDF')) {
 /* Download as PDF */
 if (!function_exists('suSqlToPDF2')) {
 
-    function suSqlToPDF2($sql, $fields, $outputFileName, $dateArray) {
+    function suSqlToPDF2($sql, $fields, $outputFileName, $pictureArray) {
         global $getSettings;
         //Make field names
         for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
@@ -1330,19 +1434,32 @@ if (!function_exists('suSqlToPDF2')) {
         $title = ucwords(str_replace('_', ' ', $outputFileName)); //Title of the sheet
         $outputFileName = $outputFileName . '.pdf'; //Name of the file to download
         $resultPdf = suQuery($sql);
+        $resultPdf['result'] = suUnstrip($resultPdf['result']);
         $resultPdf = $resultPdf['result'];
         $tbl = '';
         $cnt = 0;
         foreach ($resultPdf as $rowPdf) {
+
             $cnt = $cnt + 1;
             //Build td to display data
             $tbl .= '';
             for ($i = 0; $i <= sizeof($fields) - 1; $i++) {
                 $fld = suSlugifyStr($fields[$i], '_');
-                if (in_array($fld, $dateArray)) {
-                    $tbl .= suUnstrip($fields[$i]) . ': ' . suUnstrip($rowPdf[$fld . '2']) . '<br/>';
+                if (in_array($fld, $pictureArray)) {
+                    $imagePath = $rowPdf[$fld];
+                    $imageSize = getimagesize($imagePath);
+                    $imageWidth = $imageSize[0];
+                    $imageHeight = $imageSize[1];
+                    $imageRatio = $imageWidth / $imageHeight;
+                    $newImageWidth = $getSettings['pdf2_image_width'];
+                    $newImageHeight = round($getSettings['pdf2_image_width'] / $imageRatio);
+                    $tbl .= suUnstrip($fields[$i]) . ':<br/><img style="border: 3px solid #DDD;" width="' . $newImageWidth . '" height="' . $newImageHeight . '" src="' . $imagePath . '"/><br/>';
                 } else {
-                    $tbl .= suUnstrip($fields[$i]) . ': ' . suUnstrip($rowPdf[$fld]) . '<br/>';
+                    if (is_array($rowPdf[$fld])) {
+                        $tbl .= suUnstrip($fields[$i]) . ': ' . json_encode($rowPdf[$fld]) . '<br/>';
+                    } else {
+                        $tbl .= suUnstrip($fields[$i]) . ': ' . $rowPdf[$fld] . '<br/>';
+                    }
                 }
             }
             $tbl .= '<div style="text-align:right;font-size:9px;border-bottom:1px solid #333;color:#333">' . $cnt . '</div><div>&nbsp;</div>';
@@ -1678,6 +1795,18 @@ if (!function_exists('suGetMaxUploadSize')) {
     }
 
 }
+//Make Checkboxes
+if (!function_exists('suMakeCheckBoxesFromArray')) {
+
+    function suMakeCheckBoxesFromArray($arr) {
+        $o = '';
+        for ($i = 0; $i < sizeof($arr); $i++) {
+            $o .= "<i class='fa fa-check'></i> " . $arr[$i] . "<br>";
+        }
+        return $o;
+    }
+
+}
 //Play sound
 if (!function_exists('suPlaySound')) {
 
@@ -1693,11 +1822,18 @@ if (!function_exists('suValidateFieldType')) {
         global $getSettings, $vError, $table;
         $allowed_picture_formats = $getSettings['allowed_picture_formats'];
         $allowed_file_formats = $getSettings['allowed_file_formats'];
-
 //Validate required
-        if ($fieldValue == '') {
+        if (trim($fieldValue) == '') {
+
             if ($fieldRequired == 'yes') {
-                $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
+
+                if (!stristr($fieldType, 'checkbox')) {
+                    $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
+                } else {
+                    if (sizeof($fieldValue) == 0) {
+                        $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
+                    }
+                }
             }
         } else {
 //Validate email
@@ -1712,11 +1848,17 @@ if (!function_exists('suValidateFieldType')) {
 //Validate password
             if ($fieldType == 'password') {
                 $password2 = $_POST[suSlugifyStr($fieldName, '_') . CONFIRM_PASSWORD_POSTFIX];
-                if ($fieldValue == '' || $password2 == '') {
-                    $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
-                }
-                if ($fieldValue != $password2) {
-                    $vError[] = PASSWORD_MATCH_ERROR;
+                if ($password2) {//If confirm password is set
+                    if ($fieldValue == '' || $password2 == '') {
+                        $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
+                    }
+                    if ($fieldValue != $password2) {
+                        $vError[] = PASSWORD_MATCH_ERROR;
+                    }
+                } else {
+                    if ($fieldValue == '') {
+                        $vError[] = sprintf(REQUIRED_FIELD, urldecode($fieldName));
+                    }
                 }
             }
 
@@ -1741,19 +1883,51 @@ if (!function_exists('suValidateFieldType')) {
                         $field = $tableField[1];
                         $field = suSlugifyStr($field, '_');
 
-                        $sql2 = "SELECT " . suJsonExtract('data', $field) . " FROM  " . $tableName . " WHERE lcase(" . suJsonExtract('data', $field, FALSE) . ") = '" . strtolower(suStrip($fieldValue)) . "' AND live='Yes' LIMIT 0,1";
+                        $sql2 = "SELECT " . suJsonExtract('data', $field) . " FROM  " . $tableName . " WHERE " . suJsonExtract('data', $field, FALSE) . " = '" . suStrip($fieldValue) . "' AND live='Yes' LIMIT 0,1";
                         $result2 = suQuery($sql2);
                         $numRows2 = $result2['num_rows'];
-                        if ($numRows2 == 0) {
+                        if ($numRows2 == 1) {
+                            $result2['result'] = suUnstrip($result2['result']);
+                            $f = $result2['result'][0][$field];
+                            if ($f != $fieldValue) {
+                                $vError[] = sprintf(INCORRECT_AUTOCOMPLETE_VALUE, urldecode($fieldName));
+                            }
+                        } else {
                             $vError[] = sprintf(INCORRECT_AUTOCOMPLETE_VALUE, urldecode($fieldName));
                         }
                     }
                 }
             }
 
+//Validate year
+            if ($fieldType == 'year') {
+                if (strlen($fieldValue) != 4) {
+                    $vError[] = sprintf(VALID_YEAR, urldecode($fieldName));
+                }
+
+                if ($fieldValue != 0) {
+
+
+                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
+                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
+                    }
+                } else {
+                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
+                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
+                    }
+                }
+            }
+
 //Validate integer
             if ($fieldType == 'integer') {
+
                 if ($fieldValue != 0) {
+
+
+                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
+                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
+                    }
+                } else {
                     if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
                         $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
                     }
@@ -1764,6 +1938,10 @@ if (!function_exists('suValidateFieldType')) {
                 if ($fieldValue != 0) {
                     if (!filter_var($fieldValue, FILTER_VALIDATE_FLOAT)) {
                         $vError[] = sprintf(VALID_NUMBER, urldecode($fieldName));
+                    }
+                } else {
+                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
+                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
                     }
                 }
             }

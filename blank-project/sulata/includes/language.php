@@ -17,6 +17,8 @@ define('VALID_IP', '`%s` must be a valid IP address.');
 define('VALID_CC', '`%s` must be a valid credit card number.');
 define('VALID_NUMBER', '`%s` must be a valid number.');
 define('VALID_INTEGER', '`%s` must be a valid number without decimals.');
+define('VALID_PHONE', '`%s` must be a valid phone number, numbers only.');
+define('VALID_YEAR', '`%s` must be a valid year, four digits.');
 
 define('VALID_FILE_FORMAT', 'Only `%s` allowed in `%s`.');
 define('VALID_FILE_FORMATS', 'Only `%s` allowed.');
@@ -28,6 +30,7 @@ define('DUPLICATION_ERROR', 'A record with the same `%s` already exists.');
 define('PROFILE_UPDATE', 'Profile updated.');
 define('DUPLICATION_ERROR_ON_RESTORE', 'A record with the same `%s` has been created after your deletion, hence this record cannot be restored.');
 
+define('AUTO_PASSWORD_MESSAGE', 'For your convenience, user\'s password has been automatically generated below.');
 define('SUCCESS_MESSAGE', 'Record added successfully.');
 define('VIEW_FILE', 'View uploaded file..');
 define('VALIDATE_EMPTY_CHECKBOX', 'Please select at least one `%s` checkbox.');
@@ -59,6 +62,7 @@ define('NOTES_UDPATE_MESSAGE', 'Notes updated successfully.');
 define('MULTIPLE_LOGIN_ERROR_MESSAGE', 'This user has logged in from another location, hence this session has been logged out.');
 define('ALLOWED_ATTACHMENTS_MESSAGE', "The following files were not uploaded due to unallowed file formats.\\n\\n `%s` \\nOnly `%s` formats are allowed.\\n");
 define('MAX_UPLOAD_SIZE_MESSAGE', 'Total `%s` collective upload size.');
+define('TYPE_FOR_SUGGESTIONS', 'Type for suggestions..');
 
 /** Short Tags * */
 define('EDIT', 'Edit');
@@ -70,6 +74,14 @@ define('DELETE_ALL', 'Delete All');
 define('RESTORE', 'Restore');
 define('QUICK_PICKS', 'Quick Picks:');
 define('CONFIRM_PASSWORD', 'Confirm Password:');
+define('CLICK_TO_SELECT', 'Click to select');
+define('CLEAR_FIELD', 'Clear field');
+define('PREVIEW_PASSWORD', 'Show password');
+define('MANAGE', 'Manage');
+define('ADD', 'Add');
+define('SORT', 'Sort');
+define('SUBMIT', 'Submit');
+define('SAVE_FOR_LATER', 'Save for Later');
 
 
 define('SERIAL', '&nbsp;');

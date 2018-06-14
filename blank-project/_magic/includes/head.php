@@ -17,7 +17,7 @@
 
 <!-- Admin -->
 <link href="<?php echo BASE_URL; ?>sulata/css/admin/style.css" rel="stylesheet" type="text/css"/>
-<link href="<?php echo BASE_URL; ?>sulata/css/admin/themes/<?php echo MAGIC_THEME;?>/style.css" rel="stylesheet" type="text/css"/>
+<link href="<?php echo BASE_URL; ?>sulata/css/admin/themes/<?php echo MAGIC_THEME; ?>/style.css" rel="stylesheet" type="text/css"/>
 <!-- Sortable -->
 <link href="<?php echo BASE_URL; ?>sulata/css/admin/sortable.css" rel="stylesheet" type="text/css"/>
 <!-- CSS //-->

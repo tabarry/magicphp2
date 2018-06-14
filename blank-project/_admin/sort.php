@@ -17,7 +17,7 @@ $table = suSegment(1);
 
 //Stop unauthorised sort access
 $sortAccess = suCheckAccess(suUnTablify($table), 'sortables');
-if (!in_array(ADMIN_GROUP_NAME,$_SESSION[SESSION_PREFIX . 'user_group'])) {
+if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
     //Check IP restriction
     suCheckIpAccess();
     //Stop unauthorised access
@@ -43,16 +43,16 @@ $numRows = $result['num_rows'];
 if ($numRows == 0) {
     suExit(INVALID_RECORD);
 }
+$result['result'] = suUnstrip($result['result']);
+
 $row = $result['result'][0];
-$id = suUnstrip($row['id']);
-$title = 'Sort ' . suUnstrip($row['title']);
-$showSortingModule = suUnstrip($row['show_sorting_module']);
+$id = $row['id'];
+$title = 'Sort ' . $row['title'];
+$showSortingModule = $row['show_sorting_module'];
 
+$structure = $result['result'][0]['structure'];
 
-
-$result = $result['result'][0]['structure'];
-$structure = json_decode($result, 1);
-$sortFieldToShow = suUnstrip($structure[0]['Slug']);
+$sortFieldToShow = $structure[0]['Slug'];
 
 $h1 = $title;
 ?>
@@ -129,18 +129,20 @@ $h1 = $title;
 
                                 $result = suQuery($sql);
                                 $numRows = $result['num_rows'];
+                                $result['result'] = suUnstrip($result['result']);
+
                                 if ($numRows > 0) {
                                     $row = $result['result'];
                                     foreach ($row as $value) {
                                         ?>
-                                        <li class="ui-state-default"><i class="fa fa-th color-lightSlateGray"></i> <?php echo suUnstrip($value['name']); ?><input type="hidden" name="sortOrder[]" value="<?php echo $value['id']; ?>"/></li>
+                                        <li class="ui-state-default"><i class="fa fa-th color-lightSlateGray"></i> <?php echo $value['name']; ?><input type="hidden" name="sortOrder[]" value="<?php echo $value['id']; ?>"/></li>
                                         <?php
                                     }
                                 }
                                 ?>
                             </ul>
                             <p class="pull-right">
-                                <button type="submit" id="Submit" name="Submit" class="btn btn-theme"><i class="fa fa-check"></i></button>
+                                <button title="<?php echo SUBMIT; ?>" type="submit" id="Submit" name="Submit" class="btn btn-theme"><i class="fa fa-check"></i></button>
                             </p>
                             <div class="clearfix"></div>
 
@@ -169,6 +171,6 @@ $h1 = $title;
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

@@ -10,4 +10,5 @@ if (sizeof($_POST['add_access']) == 0 && sizeof($_POST['preview_access']) == 0 &
             parent.$("#error-area").html("<ul><li>' . $error . '</li></ul>");
             parent.$("html, body").animate({ scrollTop: parent.$("html").offset().top }, "slow");
         ');
+    exit;
 }

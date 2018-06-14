@@ -8,7 +8,7 @@ include('../sulata/includes/get-settings.php');
 //If user is not logged in, send to login page.
 checkMagicLogin();
 
-$mode='add';
+$mode = 'add';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,7 +69,7 @@ $mode='add';
                             <div class="row">
                                 <!-- Name/Title -->
                                 <div class="form-group">
-                                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <?php
                                         //Call the doSlugify() function to make a slug as the table name is typed.
                                         $js = "$('#slug').val(doSlugify(this.value, '_'))";
@@ -79,7 +79,7 @@ $mode='add';
                                         ?>
                                     </div>
                                     <!-- Slug -->
-                                     <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                                         <?php
                                         //Make arguments to be passed on to suInput() to make a control.
                                         $arg = array('type' => 'text', 'name' => 'slug', 'id' => 'slug', 'autocomplete' => 'off', 'class' => 'form-control', 'placeholder' => 'Slug', 'readonly' => 'readonly', 'title' => 'Slug');
@@ -87,7 +87,7 @@ $mode='add';
                                         ?>
                                     </div>
                                     <!-- Redirect -->
-                                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                         <?php
                                         //build the redirect_to_manage_after_add  field.
                                         //This field tells whether the page needs to redirect to manage or stay there after add.
@@ -106,7 +106,7 @@ $mode='add';
                                         ?>
                                     </div>
                                     <!-- Sorting Module Requirement -->
-                                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                         <?php
                                         //This field tells whether sorting module is required
                                         $options = $showSortingModuleArray;
@@ -114,8 +114,8 @@ $mode='add';
                                         echo suDropdown('show_sorting_module', $options, 'No', $js);
                                         ?>
                                     </div>
-                                
-                                    
+
+
                                     <!-- Labels -->
                                     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                         <?php
@@ -202,6 +202,15 @@ $mode='add';
                                         ?>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <!-- COMMENTS -->
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                        <?php
+                                        $arg = array('type' => 'text', 'name' => 'comments', 'id' => 'comments', 'autocomplete' => 'off', 'class' => 'form-control', 'placeholder' => 'Comments', 'title' => 'Comments');
+                                        echo suInput('input', $arg);
+                                        ?>
+                                    </div>
+                                </div>
                             </div>
                             <div>&nbsp;</div>
                             <ul id="sortable">
@@ -209,16 +218,18 @@ $mode='add';
                             </ul>
                             <div>&nbsp;</div>
                             <ul>
-                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'</li>
-                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may also be added like:  AND id='$id'</li>
-                                <li>Extra SQL in ExtraSQL on Add may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'</li>
+                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'.</li>
+                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may also be added like:  AND id='$id'.</li>
+                                <li>Extra SQL in ExtraSQL on Add may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'.</li>
+                                <li>If field type is selected as 'Date', you can provide default value by specifying a number. 0 is today, -1 is yesterday, +1 is tomorrow and so on.</li>
+                                <li>If field type 'Year' is selected, provide 'start year' and 'end year', separated by a comma in the 'Length/Value' textbox in a format, number of years minus current year and number of years + current years. E.g. '-100,+10'. To pass a default value, provide '0' to specify current year or -x or +x where x is the number of years from current year.</li>
                             </ul>
                             <button type="button" onclick="doCloneRow('sourceLi', 'destLi');" id="doClone" class="btn btn-sm btn-theme"><i class="fa fa-plus-circle"></i> Add Row</button>
 
                             <div class="clearfix"></div>
                             <p>
                                 <?php
-                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme pull-right');
+                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme pull-right btn-circle-submit');
                                 echo suInput('button', $arg, "<i class='fa fa-magic'></i>", TRUE);
                                 ?>   
 

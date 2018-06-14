@@ -10,6 +10,7 @@ CREATE TABLE `groups` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 INSERT INTO `groups` (`id`, `data`, `live`) VALUES
 (1, '{\"group_title\":\"Admin\",\"status\":\"Active\",\"add_access\":[\"groups\",\"users\",\"_settings\"],\"view_access\":[\"groups\",\"users\",\"_settings\"],\"update_access\":[\"groups\",\"users\",\"_settings\"],\"delete_access\":[\"groups\",\"users\",\"_settings\"],\"duplicate_access\":[\"groups\",\"users\",\"_settings\"],\"download_csv_access\":[\"groups\",\"users\",\"_settings\"],\"download_pdf_access\":[\"groups\",\"users\",\"_settings\"],\"redirect\":\"\"}', 'Yes');
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
@@ -17,7 +18,7 @@ CREATE TABLE `users` (
   `live` enum('Yes','No') NOT NULL DEFAULT 'Yes'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 INSERT INTO `users` (`id`, `data`, `live`) VALUES
-(1, '{\"name\":\"#SUPER_USER#\",\"email\":\"#SUPER_USER_LOGIN#\",\"password\":\"#SUPER_USER_PASSWORD#\",\"photo\":\"2018/05/07/superman-5ae84df49392a-5af06f9b2b323.jpg\",\"status\":\"Active\",\"theme\":\"red\",\"ip\":\"\",\"user_group\":[\"Admin\"],\"send_mail_to_user\":\"No\",\"sound_settings\":\"1\",\"navigation_settings\":\"Right\",\"sortOrder\":\"\",\"redirect\":\"\",\"save_for_later_use\":\"No\"}', 'Yes'),
+(1, '{\"name\":\"#SUPER_USER#\",\"email\":\"#SUPER_USER_LOGIN#\",\"password\":\"#SUPER_USER_PASSWORD#\",\"photo\":\"2018/05/07/superman-5ae84df49392a-5af06f9b2b323.jpg\",\"status\":\"Active\",\"theme\":\"default\",\"ip\":\"\",\"user_group\":[\"Admin\"],\"send_mail_to_user\":\"No\",\"sound_settings\":\"1\",\"navigation_settings\":\"Right\",\"sortOrder\":\"\",\"redirect\":\"\",\"save_for_later_use\":\"No\"}', 'Yes'),
 (2, '{\"name\":\"#ADMIN_USER#\",\"email\":\"#ADMIN_LOGIN#\",\"password\":\"#ADMIN_PASSWORD#\",\"photo\":\"2018%2F05%2F01%2Fironman-III-5ae812f7e7536.png\",\"status\":\"Active\",\"theme\":\"red\",\"ip\":\"\",\"user_group\":[\"Admin\"],\"send_mail_to_user\":\"No\",\"sound_settings\":\"1\",\"navigation_settings\":\"Right\",\"sortOrder\":\"\",\"redirect\":\"\",\"save_for_later_use\":\"No\"}', 'Yes');
 DROP TABLE IF EXISTS `_logs`;
 CREATE TABLE `_logs` (
@@ -43,7 +44,7 @@ INSERT INTO `_settings` (`id`, `data`, `live`) VALUES
 (8, '{\"setting_title\":\"Allowed+File+Formats\",\"setting_key\":\"allowed_file_formats\",\"setting_value\":\"doc%2Cxls%2Cdocx%2Cxlsx%2Cppt%2Cpptx%2Cpdf%2Cgif%2Cjpg%2Cjpeg%2Cpng\",\"id\":\"8\",\"redirect\":\"\"}', 'Yes'),
 (9, '{\"setting_title\":\"Allowed+Picture+Formats\",\"setting_key\":\"allowed_picture_formats\",\"setting_value\":\"gif%2Cjpg%2Cjpeg%2Cpng\",\"id\":\"9\",\"redirect\":\"\"}', 'Yes'),
 (27, '{\"setting_title\": \"Toggle+Password\", \"setting_key\": \"toggle_password\", \"setting_value\": \"1\", \"redirect\": \"\"}', 'Yes'),
-(11, '{\"setting_title\":\"Site+Email\",\"setting_key\":\"site_email\",\"setting_value\":\"superman%40sulata.com.pk\"}', 'Yes'),
+(11, '{\"setting_title\":\"Site+Email\",\"setting_key\":\"site_email\",\"setting_value\":\""#ADMIN_LOGIN#\"}', 'Yes'),
 (12, '{\"setting_title\":\"Site+URL\",\"setting_key\":\"site_url\",\"setting_value\":\"http%3A%2F%2Fwww.sulata.com.pk\"}', 'Yes'),
 (13, '{\"setting_title\":\"Employee+Image+Height\",\"setting_key\":\"employee_image_height\",\"setting_value\":\"150\"}', 'Yes'),
 (14, '{\"setting_title\":\"Employee+Image+Width\",\"setting_key\":\"employee_image_width\",\"setting_value\":\"100\"}', 'Yes'),
@@ -64,9 +65,16 @@ INSERT INTO `_settings` (`id`, `data`, `live`) VALUES
 (30, '{\"setting_title\":\"PDF+Format+%28table%2Flist%29\",\"setting_key\":\"pdf_format\",\"setting_value\":\"list\",\"redirect\":\"\"}', 'Yes'),
 (31, '{\"setting_title\": \"Show+Clear+Field\", \"setting_key\": \"show_clear_field\", \"setting_value\": \"1\"}', 'Yes'),
 (32, '{\"setting_title\": \"Multi+Delete\", \"setting_key\": \"multi_delete\", \"setting_value\": \"1\", \"redirect\": \"\"}', 'Yes'),
-(33, '{\"setting_title\":\"Restrict+Over+IP+%28-+or+IP%29\",\"setting_key\":\"restrict_over_ip\",\"setting_value\":\"-\",\"redirect\":\"\":\"No\"}', 'Yes'),
-(34, '{\"setting_title\": \"Show+Profile+Picture\", \"setting_key\": \"show_profile_picture\", \"setting_value\": \"0\", \"save_for_later_use\": \"No\"}', 'Yes'),
-(37, '{\"setting_title\":\"Enable+Sound\",\"setting_key\":\"enable_sound\",\"setting_value\":\"1\",\"redirect\":\"\",\"save_for_later_use\":\"No\"}', 'Yes');
+(33, '{\"setting_title\":\"Restrict+Over+IP+%28-+or+IP%29\",\"setting_key\":\"restrict_over_ip\",\"setting_value\":\"-\",\"redirect\":\"\":\"No\"}', 'No'),
+(34, '{\"setting_title\": \"Show+Profile+Picture\", \"setting_key\": \"show_profile_picture\", \"setting_value\": \"1\", \"save_for_later_use\": \"No\"}', 'Yes'),
+(37, '{\"setting_title\":\"Enable+Sound\",\"setting_key\":\"enable_sound\",\"setting_value\":\"1\",\"redirect\":\"\",\"save_for_later_use\":\"No\"}', 'Yes'),
+(39, '{\"setting_title\": \"Format+Percentage\", \"setting_key\": \"format_percentage\", \"setting_value\": \"0\", \"sortOrder\": \"10000\", \"redirect\": \"http%3A%2F%2Flocalhost%2Fkarafit%2F_admin%2Fmanage.php%2F-settings%2F%3Fq%3DFormat%2BPercentage%7E%60%7Es%3DSetting%2BTitle%7E%60%7ESubmit%3D\", \"save_for_later_use\": \"No\"}', 'Yes'),
+(40, '{\"setting_title\":\"Restrict+Over+IP\",\"setting_key\":\"restrict_over_ip\",\"setting_value\":\"-\",\"sortOrder\":\"10000\",\"save_for_later_use\":\"No\"}', 'Yes'),
+(41, '{\"setting_title\": \"Autogenerate+User+Password\", \"setting_key\": \"autogenerate_user_password\", \"setting_value\": \"1\", \"sortOrder\": \"10000\", \"save_for_later_use\": \"No\"}', 'Yes'),
+(42, '{\"setting_title\": \"Show+Submit+Button+Text\", \"setting_key\": \"show_submit_button_text\", \"setting_value\": \"0\", \"sortOrder\": \"10000\", \"save_for_later_use\": \"No\"}', 'Yes'),
+(43, '{\"setting_title\": \"PDF1+Image+Height\", \"setting_key\": \"pdf1_image_height\", \"setting_value\": \"30\", \"sortOrder\": \"10000\", \"save_for_later_use\": \"No\"}', 'Yes'),
+(44, '{\"setting_title\":\"PDF2+Image+Width\",\"setting_key\":\"pdf2_image_width\",\"setting_value\":\"50\",\"sortOrder\":\"10000\",\"save_for_later_use\":\"No\"}', 'Yes'),
+(45, '{\"setting_title\": \"Preview+Image+Width\", \"setting_key\": \"preview_image_width\", \"setting_value\": \"200\", \"sortOrder\": \"10000\", \"save_for_later_use\": \"No\"}', 'Yes');
 DROP TABLE IF EXISTS `_structure`;
 CREATE TABLE `_structure` (
   `id` int(11) NOT NULL,
@@ -83,6 +91,7 @@ CREATE TABLE `_structure` (
   `extrasql_on_delete` varchar(255) DEFAULT NULL,
   `extrasql_on_restore` varchar(255) DEFAULT NULL,
   `extrasql_on_view` varchar(255) DEFAULT NULL,
+  `comments` varchar(255) DEFAULT NULL,
   `structure` text NOT NULL,
   `display` enum('Yes','No') NOT NULL DEFAULT 'Yes',
   `sort_order` float NOT NULL DEFAULT 1000,

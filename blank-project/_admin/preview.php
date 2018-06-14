@@ -12,13 +12,15 @@ checkAdminLogin();
 $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 $table = suSegment(1);
+$tableSegment = suSegment(1);
+
 //Stop unauthorised preview access
-$previewAccess=suCheckAccess(suUnTablify($table), 'previewables');
-if (!in_array(ADMIN_GROUP_NAME,$_SESSION[SESSION_PREFIX . 'user_group'])) {
+$previewAccess = suCheckAccess(suUnTablify($table), 'previewables');
+if (!in_array(ADMIN_GROUP_NAME, $_SESSION[SESSION_PREFIX . 'user_group'])) {
     //Check IP restriction
     suCheckIpAccess();
     //Stop unauthorised access
-    if ($previewAccess==FALSE) {
+    if ($previewAccess == FALSE) {
         suExit(INVALID_ACCESS);
     }
 }
@@ -38,13 +40,13 @@ $numRows = $result['num_rows'];
 if ($numRows == 0) {
     suExit(INVALID_RECORD);
 }
+$result['result'] = suUnstrip($result['result']);
 $row = $result['result'][0];
-$id = suUnstrip($row['id']);
-$title = suUnstrip($row['title']);
-//$table = suUnstrip($row['slug']);
-$label_add = suUnstrip($row['label_add']);
-$label_update = suUnstrip($row['label_update']);
-$display = suUnstrip($row['display']);
+$id = $row['id'];
+$title = $row['title'];
+$label_add = $row['label_add'];
+$label_update = $row['label_update'];
+$display = $row['display'];
 
 
 //Any actions desired at this point should be coded in this file
@@ -54,7 +56,9 @@ if (file_exists('includes/custom/preview-a.php')) {
 
 
 $structure = $row['structure'];
-$structure = json_decode($structure, 1);
+//$structure = html_entity_decode($structure);
+//
+//$structure = json_decode($structure, 1);
 
 $h1 = 'Preview';
 
@@ -123,7 +127,7 @@ $data = json_decode($data, 1);
                                     include('includes/custom/preview-c.php');
                                 }
                                 foreach ($structure as $value) {
-                                    $value = array_merge($value, array('_____value' => suUnstrip($data[$value['Slug']])));
+                                    $value = array_merge($value, array('_____value' => $data[$value['Slug']]));
                                     //Any actions desired at this point should be coded in this file
                                     if (file_exists('includes/custom/preview-d.php')) {
                                         include('includes/custom/preview-d.php');
@@ -153,6 +157,6 @@ $data = json_decode($data, 1);
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

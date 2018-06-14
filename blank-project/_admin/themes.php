@@ -24,7 +24,7 @@ if (suSegment(1) == 'navigation') {
         $result = suQuery($sql);
         if ($result['affected_rows'] == 1) {
             $_SESSION[SESSION_PREFIX . 'user_navigation'] = 'Right';
-            $js = "parent.$('#flip_navigation').hide();parent.window.location.href='".ADMIN_URL."themes".PHP_EXTENSION."/themes/'";
+            $js = "parent.$('#flip_navigation').hide();parent.window.location.href='" . ADMIN_URL . "themes" . PHP_EXTENSION . "/themes/'";
             suPrintJS($js);
         }
     } else { //Switch to left
@@ -32,7 +32,7 @@ if (suSegment(1) == 'navigation') {
         $result = suQuery($sql);
         if ($result['affected_rows'] == 1) {
             $_SESSION[SESSION_PREFIX . 'user_navigation'] = 'Left';
-            $js = "parent.$('#flip_navigation').hide();parent.window.location.href='".ADMIN_URL."themes".PHP_EXTENSION."/themes/'";
+            $js = "parent.$('#flip_navigation').hide();parent.window.location.href='" . ADMIN_URL . "themes" . PHP_EXTENSION . "/themes/'";
             suPrintJS($js);
         }
     }
@@ -137,7 +137,13 @@ $h1 = $title;
                                 $navigationValue = 'Left"';
                             }
                             ?>
-                            <input title="Flip Navigation" name="flip_navigation" id="flip_navigation" value="<?php echo $navigationValue; ?>" type="checkbox" <?php echo $navigationChecked; ?> onclick="if(this.value=='Left'){this.value='Right';}else{this.value='Left';};remote.location.href = '<?php echo ADMIN_URL; ?>themes.php/navigation/?n=' + this.value">   
+                            <input title="Flip Navigation" name="flip_navigation" id="flip_navigation" value="<?php echo $navigationValue; ?>" type="checkbox" <?php echo $navigationChecked; ?> onclick="if (this.value == 'Left') {
+                                        this.value = 'Right';
+                                    } else {
+                                        this.value = 'Left';
+                                    }
+                                    ;
+                                    remote.location.href = '<?php echo ADMIN_URL; ?>themes.php/navigation/?n=' + this.value">   
 
                             <div class="state p-warning">
                                 <label>Navigation Placement</label>
@@ -201,6 +207,6 @@ $h1 = $title;
             <?php include('includes/footer.php'); ?>
         </div>
         <?php include('includes/footer-js.php'); ?>
+        <?php suIframe(); ?>
     </body>
 </html>
-<?php suIframe(); ?>

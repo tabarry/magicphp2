@@ -36,6 +36,7 @@ $fieldsArray = array(
     'db_password' => array('placeholder' => 'Database Password', 'title' => 'Database Password', 'type' => 'password', 'value' => $ck_db_password, 'autocomplete' => 'off'),
     'db_host' => array('placeholder' => 'Database Host', 'title' => 'Database Host', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_host, 'autocomplete' => 'off'),
     'db_port' => array('placeholder' => 'Database Port', 'title' => 'Database Port', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_port, 'autocomplete' => 'off'),
+    'magic_password' => array('type' => 'hidden', 'value' => MAGIC_PASSWORD,),
 );
 
 //If form submitted
@@ -118,7 +119,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         $config = str_replace('#SESSION_PREFIX#', uniqid(), $config);
         $config = str_replace('#VERSION#', FRAMEWORK_VERSION, $config);
         $config = str_replace('#RELEASE_DATE#', RELEASE_DATE, $config);
-        $config = str_replace('#API_KEY#', uniqid().uniqid(), $config);
+        $config = str_replace('#API_KEY#', uniqid() . uniqid(), $config);
         $config = str_replace('#DB_HOST#', $db_host, $config);
         $config = str_replace('#DB_NAME#', $db_name, $config);
         $config = str_replace('#DB_USER#', $db_user, $config);
@@ -148,7 +149,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         $db_dump = str_replace("#ADMIN_LOGIN#", urlencode(ADMIN_LOGIN), $db_dump);
         $db_dump = str_replace("#ADMIN_PASSWORD#", suCrypt(ADMIN_PASSWORD), $db_dump);
         $db_dump = str_replace("#MAGIC_LOGIN#", urlencode(MAGIC_LOGIN), $db_dump);
-        $db_dump = str_replace("#MAGIC_PASSWORD#", urlencode(MAGIC_PASSWORD), $db_dump);
+        $db_dump = str_replace("#MAGIC_PASSWORD#", urlencode($_POST['magic_password']), $db_dump);
 
         if ($mariaDb == TRUE) {
             $db_dump = str_replace("#jsonField#", 'json', $db_dump);
@@ -190,6 +191,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'nothing') {
         <title><?php echo $title; ?></title>
         <link href="css/style.css" rel="stylesheet" type="text/css"/>
         <script src="js/magic.js" type="text/javascript"></script>
+        <link rel="icon" href="favicon.png">
     </head>
     <body>
     <center>

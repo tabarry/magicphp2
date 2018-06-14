@@ -1,6 +1,6 @@
 <?php
 
-if ($table == USERS_TABLE_NAME) {
+if ($tableSegment == USERS_TABLE_NAME) {
     //Stop user from self deleting
     suPrintJs("
         if($('#del_icon_" . $_SESSION[SESSION_PREFIX . 'user_id'] . "')){
@@ -20,7 +20,7 @@ if ($table == USERS_TABLE_NAME) {
         
     ");
     }
-    
+
     //Second Super User cannot be deleted
     suPrintJs("
         if($('#del_icon_" . ADMIN_2 . "')){
@@ -31,12 +31,11 @@ if ($table == USERS_TABLE_NAME) {
         }
         
     ");
-    
 }
 
 
 //Stop user from deleting admin group by hiding the edit,update, duplicate and delete icons
-if ($table == 'groups') {
+if ($tableSegment == 'groups') {
     $sql = "SELECT id FROM groups WHERE " . suJsonExtract('data', 'group_title', FALSE) . "='" . ADMIN_GROUP_NAME . "' AND live='Yes' LIMIT 0,1";
     $result = suQuery($sql);
     $adminGroupId = $result['result'][0][id];

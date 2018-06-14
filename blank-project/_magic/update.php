@@ -8,7 +8,7 @@ include('../sulata/includes/get-settings.php');
 //If user is not logged in, send to login page.
 checkMagicLogin();
 
-$mode='update';
+$mode = 'update';
 //Assign the value of segment 1 to $id.
 $id = suSegment(1);
 if (!is_numeric($id)) {
@@ -16,8 +16,10 @@ if (!is_numeric($id)) {
     suExit(INVALID_RECORD);
 }
 //Build SQL to fetch form structure and settings.
-$sql = "SELECT id,title,label_add,label_update,slug,redirect_after_add,show_form_on_manage,show_sorting_module,structure,display,save_for_later,extrasql_on_add,extrasql_on_update,extrasql_on_single_update,extrasql_on_delete,extrasql_on_restore,extrasql_on_view FROM " . STRUCTURE_TABLE_NAME . " WHERE live='Yes' AND id='" . $id . "' LIMIT 0,1 ";
+$sql = "SELECT id,title,label_add,label_update,slug,redirect_after_add,show_form_on_manage,show_sorting_module,comments,structure,display,save_for_later,extrasql_on_add,extrasql_on_update,extrasql_on_single_update,extrasql_on_delete,extrasql_on_restore,extrasql_on_view FROM " . STRUCTURE_TABLE_NAME . " WHERE live='Yes' AND id='" . $id . "' LIMIT 0,1 ";
 $result = suQuery($sql);
+
+$result['result'] = suUnstrip($result['result']);
 $row = $result['result'][0];
 //Get number of rows fetched and store in the $numRows variable.
 $numRows = $result['num_rows'];
@@ -51,7 +53,7 @@ if (suSegment(2) == 'duplicate') {
                 suToggleButton(1);
                 //Rename elements
                 doChangeEleName();
-                
+
 
             });
         </script> 
@@ -129,7 +131,7 @@ if (suSegment(2) == 'duplicate') {
                                         echo suDropdown('redirect_after_add', $options, suUnstrip($row['redirect_after_add']), $js);
                                         ?>
                                     </div>
-                                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                         <?php
                                         //This field tells whether to show add on manage page.
                                         $options = $showFormOnManageArray;
@@ -137,8 +139,8 @@ if (suSegment(2) == 'duplicate') {
                                         echo suDropdown('show_form_on_manage', $options, suUnstrip($row['show_form_on_manage']), $js);
                                         ?>
                                     </div>
-                                     <!-- Sorting Module Requirement -->
-                                     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                                    <!-- Sorting Module Requirement -->
+                                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
                                         <?php
                                         //This field tells whether sorting module is required
                                         $options = $showSortingModuleArray;
@@ -146,8 +148,8 @@ if (suSegment(2) == 'duplicate') {
                                         echo suDropdown('show_sorting_module', $options, suUnstrip($row['show_sorting_module']), $js);
                                         ?>
                                     </div>
-                                
-                                <!-- Labels -->
+
+                                    <!-- Labels -->
                                     <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
                                         <?php
                                         //build the label_add field.
@@ -231,6 +233,15 @@ if (suSegment(2) == 'duplicate') {
                                         echo suInput('input', $arg);
                                         ?>
                                     </div>
+                                    <div class="form-group">
+                                        <!-- COMMENTS -->
+                                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                            <?php
+                                            $arg = array('type' => 'text', 'name' => 'comments', 'id' => 'comments', 'autocomplete' => 'off', 'class' => 'form-control', 'placeholder' => 'Comments', 'title' => 'Comments', 'value' => suUnstrip($row['comments']));
+                                            echo suInput('input', $arg);
+                                            ?>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div>&nbsp;</div>
@@ -239,7 +250,8 @@ if (suSegment(2) == 'duplicate') {
                                 <?php
 //Get table structure and assign it to $structure variable
                                 $structure = $row['structure'];
-                                $structure = json_decode($structure, 1);
+                                //echo $structure= html_entity_decode($structure);
+                                //$structure = json_decode($structure, 1);
 //Loop through the structre array to build row and populate it with data
                                 for ($i = 0; $i <= sizeof($structure) - 1; $i++) {
                                     ////print_array($structure);
@@ -252,16 +264,18 @@ if (suSegment(2) == 'duplicate') {
                             <div class="clearfix"></div>
                             <div>&nbsp;</div>
                             <ul>
-                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'</li>
-                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may also be added like:  AND id='$id'</li>
-                                <li>Extra SQL in ExtraSQL on Add may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'</li>
+                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'.</li>
+                                <li>Extra SQL in ExtraSQL, ExtraSQL on View, ExtraSQL on Update, ExtraSQL on Single Update, ExtraSQL on Delete and ExtraSQL on Restore may also be added like:  AND id='$id'.</li>
+                                <li>Extra SQL in ExtraSQL on Add may be added like:  AND lcase(TRIM(BOTH '"' FROM json_extract(data,'$.status'))) = 'active'.</li>
+                                <li>If field type is selected as 'Date', you can provide default value by specifying a number. 0 is today, -1 is yesterday, +1 is tomorrow and so on.</li>
+                                <li>If field type 'Year' is selected, provide 'start year' and 'end year', separated by a comma in the 'Length/Value' textbox in a format, number of years minus current year and number of years + current years. E.g. '-100,+10'. To pass a default value, provide '0' to specify current year or -x or +x where x is the number of years from current year.</li>
                             </ul>
                             <button type="button" onclick="doCloneRow('sourceLi', 'destLi');" id="doClone" class="btn btn-sm btn-theme"><i class="fa fa-plus-circle"></i> Add Row</button>
 
                             <div class="clearfix"></div>
                             <p>
                                 <?php
-                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme pull-right');
+                                $arg = array('type' => 'submit', 'name' => 'Submit', 'id' => 'Submit', 'class' => 'btn btn-theme pull-right btn-circle-submit');
                                 echo suInput('button', $arg, "<i class='fa fa-magic'></i>", TRUE);
 
 

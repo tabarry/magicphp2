@@ -15,6 +15,22 @@ for ($k = 0; $k <= sizeof($resultFields) - 1; $k++) {
     }
 }
 asort($sourceArray);
+//Get all tables for add-more functionality
+$sourceArray2 = array('add_more_source' => '===ADD MORE SOURCE===');
+$sqlFields = "SELECT slug, structure FROM " . STRUCTURE_TABLE_NAME . " WHERE live='Yes' ORDER BY slug";
+$resultFields = suQuery($sqlFields);
+$resultFields = $resultFields['result'];
+for ($k = 0; $k <= sizeof($resultFields) - 1; $k++) {
+    $slug = $resultFields[$k]['slug'];
+    for ($j = 0; $j <= sizeof($structureField) - 1; $j++) {
+        //Build array to show table name and field name.
+        if (!in_array($slug, $reservedTables)) {
+            $sourceArray2[$slug] = $slug;
+        }
+    }
+}
+$sourceArray = array_merge($sourceArray, $sourceArray2);
+
 //===
 //Build array to generate the 'Template' dropdown.
 $templateArray = array(
@@ -32,11 +48,13 @@ $typeArray = array(
     'password' => 'Password',
     'phone' => 'Phone',
     'date' => 'Date',
+    'year' => 'Year',
     'textarea' => 'Textarea',
     'html_area' => 'HTML Area',
     'integer' => 'Integer',
     'decimal' => 'Decimal',
     'currency' => 'Currency',
+    'percentage' => 'Percentage',
     'dropdown' => 'Dropdown',
     'dropdown_from_db' => 'Dropdown from DB',
     'autocomplete' => 'Autocomplete',
@@ -58,7 +76,9 @@ $typeArray = array(
     'checkbox_switch' => 'Checkbox (Switch)',
     'checkbox_from_db_switch' => 'Checkbox from DB (Switch)',
     'separator' => 'Separator',
+    'line_break' => 'Line Break',
     'json' => 'JSON',
+    'add_more_section' => 'Add More Section',
 );
 //asort($typeArray);//Sort the $typeArray.
 //Extend the $typeArray to merge more values in it
@@ -239,12 +259,18 @@ if (isset($requiredSaveForLater)) {
     $requiredSaveForLater = suUnstrip($structure[$i]['RequiredSaveForLater']);
     if ($requiredSaveForLater == 'yes') {
         $requiredSaveForLaterChecked = array('checked' => 'checked');
+        $disabledRequiredChecked = array();
     } else {
         $requiredSaveForLaterChecked = array();
+        $disabledRequiredChecked = array('disabled' => 'disabled');
+    }
+    if ($required == 'yes') {
+        $disabledRequiredChecked = array();
     }
 } else {
     $requiredSaveForLater = 'yes';
     $requiredSaveForLaterChecked = array();
+    $disabledRequiredChecked = array('disabled' => 'disabled');
 }
 //Build onclick
 if (isset($onclick)) {
@@ -499,7 +525,8 @@ $controls = array(
         'options' => '',
         'js' => '',
         'default' => 'yes',
-        'checked' => $requiredChecked
+        'checked' => $requiredChecked,
+        'onclick' => 'doSaveForLater(this)'
     ),
     //Required on Save for Later
     array(
@@ -510,7 +537,8 @@ $controls = array(
         'options' => '',
         'js' => '',
         'default' => 'yes',
-        'checked' => $requiredSaveForLaterChecked
+        'disabled' => $disabledRequiredChecked,
+        'checked' => $requiredSaveForLaterChecked,
     ),
     //Unique
     array(
@@ -640,17 +668,21 @@ $controls = array(
     <table style="width:<?php echo $tableWidth; ?>px;">
         <tr>
             <!-- 1/Move -->
-            <td style="width:50px; cursor:move; ">:::::</td>
-            <?php 
-            $defaultHint='';
-            for ($c = 0; $c <= sizeof($controls) - 1; $c++) { 
-                
-            if($controls[$c]['name']=='_name'){
-                $defaultHint= $controls[$c]['default'];
-            }   
+            <td style="width:50px; cursor:move; ">
+                <p><i class="fa fa-th"></i></p>
+                <p><a href="javascript:;" onclick="return doRemove(this, '<?php echo CONFIRM_DELETE; ?>');"><i class="fa fa-trash"></i></a></p>
+            </td>
+            <?php
+            $defaultHint = '';
+            for ($c = 0; $c <= sizeof($controls) - 1; $c++) {
+
+                if ($controls[$c]['name'] == '_name') {
+                    $defaultHint = $controls[$c]['default'];
+                }
                 ?>
-                                                                                                                                                                                                            <!-- <?php echo ($c + 2); ?>/<?php echo $controls[$c]['name']; ?> -->
+                                                                                                                                                                                                                                                        <!-- <?php echo ($c + 2); ?>/<?php echo $controls[$c]['name']; ?> -->
                 <td style="width:<?php echo $controls[$c]['width']; ?>px">
+
                     <?php
                     if ($controls[$c]['type'] == 'dropdown') {//Dropdown
                         echo suDropdown($controls[$c]['name'], $controls[$c]['options'], $controls[$c]['default'], $controls[$c]['js']);
@@ -667,13 +699,24 @@ $controls = array(
                             echo "<small><a href='javascript:;' onclick=\"$(this).closest('td').find('input[type=text]').val('$(this).val(doUcWords($(this).val()))');\">Title Case</a>. <a href='javascript:;' onclick=\"$(this).closest('td').find('input[type=text]').val('$(this).val(doSlugify($(this).val(),\'_\'))');\">Slugify</a></small>. ";
                         }
                     } elseif ($controls[$c]['type'] == 'checkbox') {//Checkbox
-                        $arg = array('type' => 'checkbox', 'name' => $controls[$c]['name'], 'id' => $controls[$c]['name'], 'class' => 'form-control', 'value' => $controls[$c]['default']);
+//                        if($controls[$c]['name']=='_requiredsaveforlater'){
+//                            $disabled = array('disabled'=>'disabled');
+//                        }
+                        $arg = array('type' => 'checkbox', 'name' => $controls[$c]['name'], 'id' => $controls[$c]['name'], 'class' => 'form-control', 'value' => $controls[$c]['default'], 'onclick' => $controls[$c]['onclick']);
                         $arg = array_merge($arg, $controls[$c]['checked']);
+                        if ($controls[$c]['name'] == '_requiredsaveforlater') {
+                            $arg = array_merge($arg, $controls[$c]['disabled']);
+                            $arg = array_merge($arg, array('title' => 'If disabled, enable `Required on Submit` field.'));
+                        }
+
                         echo "<label><center>" . suInput('input', $arg) . $controls[$c]['title'] . "</center></label>";
+//                        if ($controls[$c]['name'] == '_requiredsaveforlater') {
+//                            echo "<center><small>If disabled, enable `Required on Submit` field.</small></center>";
+//                        }
                     }
                     ?>
 
-                    <div><input type="text" name="_hint<?php echo $controls[$c]['name']; ?>" id="_hint<?php echo $controls[$c]['name']; ?>" class="magic-hint" readonly="readonly" placeholder="" value="<?php echo $defaultHint;?>"/></div>
+                    <div><input type="text" name="_hint<?php echo $controls[$c]['name']; ?>" id="_hint<?php echo $controls[$c]['name']; ?>" class="magic-hint" readonly="readonly" placeholder="" value="<?php echo $defaultHint; ?>"/></div>
 
                 </td>
             <?php } ?>
@@ -746,10 +789,10 @@ for ($e = 2; $e < sizeof($controls); $e++) {
         }
         id = id.split('_');
         id = id[1];
-        
+
         //get type of this field
         type = $('#type_' + id).val();
-        if(type=='separator'){
+        if (type == 'separator') {
             //Fill separator value
             $('#length_' + id).val(val)
         }

@@ -77,7 +77,8 @@ if ($do == 'add') {
     }
 
     $data = json_encode($data);
-    $sql = "INSERT INTO " . STRUCTURE_TABLE_NAME . " SET title='" . suStrip($_POST['title']) . "',slug='" . suStrip($_POST['slug']) . "',redirect_after_add ='" . suStrip($_POST['redirect_after_add']) . "',show_form_on_manage ='" . suStrip($_POST['show_form_on_manage']) . "',show_sorting_module ='" . suStrip($_POST['show_sorting_module']) . "',label_add='" . $_POST['label_add'] . "',label_update='" . $_POST['label_update'] . "',structure='" . $data . "',display='" . $_POST['display'] . "',save_for_later='" . $_POST['enable_save_for_later'] . "', live='Yes', extrasql_on_add ='" . suStrip($_POST['extrasql_on_add']) . "', extrasql_on_update ='" . suStrip($_POST['extrasql_on_update']) . "', extrasql_on_single_update ='" . suStrip($_POST['extrasql_on_single_update']) . "', extrasql_on_delete ='" . suStrip($_POST['extrasql_on_delete']) . "', extrasql_on_restore ='" . suStrip($_POST['extrasql_on_restore']) . "', extrasql_on_view ='" . suStrip($_POST['extrasql_on_view']) . "'";
+
+    $sql = "INSERT INTO " . STRUCTURE_TABLE_NAME . " SET title='" . suStrip($_POST['title']) . "',slug='" . suStrip($_POST['slug']) . "',redirect_after_add ='" . suStrip($_POST['redirect_after_add']) . "',show_form_on_manage ='" . suStrip($_POST['show_form_on_manage']) . "',show_sorting_module ='" . suStrip($_POST['show_sorting_module']) . "',label_add='" . $_POST['label_add'] . "',label_update='" . $_POST['label_update'] . "',comments='" . suStrip($_POST['comments']) . "',structure='" . $data . "',display='" . $_POST['display'] . "',save_for_later='" . $_POST['enable_save_for_later'] . "', live='Yes', extrasql_on_add ='" . suStrip($_POST['extrasql_on_add']) . "', extrasql_on_update ='" . suStrip($_POST['extrasql_on_update']) . "', extrasql_on_single_update ='" . suStrip($_POST['extrasql_on_single_update']) . "', extrasql_on_delete ='" . suStrip($_POST['extrasql_on_delete']) . "', extrasql_on_restore ='" . suStrip($_POST['extrasql_on_restore']) . "', extrasql_on_view ='" . suStrip($_POST['extrasql_on_view']) . "'";
     $result = suQuery($sql);
     //If there is an SQL error, exectue the following block.
     if ($result['errno'] > 0) {
@@ -140,6 +141,10 @@ if ($do == 'update') {
     //Check referrer (CSRF)
     suCheckRef();
 
+    //Take backup of existing table
+    $uid = 'bu_' . date("YmdHis") . '_';
+    $sql = "INSERT INTO " . STRUCTURE_TABLE_NAME . " (title,slug,show_form_on_manage,show_sorting_module,redirect_after_add,label_add,label_update,extrasql_on_add,extrasql_on_update,extrasql_on_single_update,extrasql_on_delete,extrasql_on_restore,extrasql_on_view,comments,structure,display,sort_order,save_for_later,live) SELECT CONCAT('" . $uid . "',title),CONCAT('" . $uid . "',slug),show_form_on_manage,show_sorting_module,redirect_after_add,label_add,label_update,extrasql_on_add,extrasql_on_update,extrasql_on_single_update,extrasql_on_delete,extrasql_on_restore,extrasql_on_view,comments,structure,display,sort_order,save_for_later,'No' FROM " . STRUCTURE_TABLE_NAME . " WHERE id='" . $_POST['id'] . "'";
+    suQuery($sql);
     //Instantiate the 'data' variable as array
     $data = array();
     //Loop through all posted fields for table structure creation
@@ -183,7 +188,7 @@ if ($do == 'update') {
     }
     $data = json_encode($data);
 
-    $sql = "UPDATE " . STRUCTURE_TABLE_NAME . " SET title='" . suStrip($_POST['title']) . "',label_add='" . $_POST['label_add'] . "',label_update='" . $_POST['label_update'] . "',slug='" . suStrip($_POST['slug']) . "',redirect_after_add ='" . suStrip($_POST['redirect_after_add']) . "',show_form_on_manage ='" . suStrip($_POST['show_form_on_manage']) . "',show_sorting_module ='" . suStrip($_POST['show_sorting_module']) . "',display='" . $_POST['display'] . "',save_for_later='" . $_POST['enable_save_for_later'] . "',structure='" . $data . "', extrasql_on_add ='" . suStrip($_POST['extrasql_on_add']) . "', extrasql_on_update ='" . suStrip($_POST['extrasql_on_update']) . "', extrasql_on_single_update ='" . suStrip($_POST['extrasql_on_single_update']) . "', extrasql_on_delete ='" . suStrip($_POST['extrasql_on_delete']) . "', extrasql_on_restore ='" . suStrip($_POST['extrasql_on_restore']) . "', extrasql_on_view ='" . suStrip($_POST['extrasql_on_view']) . "' WHERE id='" . $_POST['id'] . "'";
+    $sql = "UPDATE " . STRUCTURE_TABLE_NAME . " SET title='" . suStrip($_POST['title']) . "',label_add='" . $_POST['label_add'] . "',label_update='" . $_POST['label_update'] . "',slug='" . suStrip($_POST['slug']) . "',redirect_after_add ='" . suStrip($_POST['redirect_after_add']) . "',show_form_on_manage ='" . suStrip($_POST['show_form_on_manage']) . "',show_sorting_module ='" . suStrip($_POST['show_sorting_module']) . "',display='" . $_POST['display'] . "',save_for_later='" . $_POST['enable_save_for_later'] . "',comments='" . suStrip($_POST['comments']) . "',structure='" . $data . "', extrasql_on_add ='" . suStrip($_POST['extrasql_on_add']) . "', extrasql_on_update ='" . suStrip($_POST['extrasql_on_update']) . "', extrasql_on_single_update ='" . suStrip($_POST['extrasql_on_single_update']) . "', extrasql_on_delete ='" . suStrip($_POST['extrasql_on_delete']) . "', extrasql_on_restore ='" . suStrip($_POST['extrasql_on_restore']) . "', extrasql_on_view ='" . suStrip($_POST['extrasql_on_view']) . "' WHERE id='" . $_POST['id'] . "'";
     $result = suQuery($sql);
 
 
@@ -250,9 +255,9 @@ if ($do == "delete") {
 if ($do == 'sort') {
     //Check referrer (CSRF)
     suCheckRef();
-    for($i=0;$i<sizeof($_POST['sort_order']);$i++){
-        $j = $i+10;
-        $sql = "UPDATE ".STRUCTURE_TABLE_NAME." SET sort_order='".$j."' WHERE id='".$_POST['sort_order'][$i]."'";
+    for ($i = 0; $i < sizeof($_POST['sort_order']); $i++) {
+        $j = $i + 10;
+        $sql = "UPDATE " . STRUCTURE_TABLE_NAME . " SET sort_order='" . $j . "' WHERE id='" . $_POST['sort_order'][$i] . "'";
         suQuery($sql);
     }
 

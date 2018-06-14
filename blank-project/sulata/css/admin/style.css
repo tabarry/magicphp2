@@ -194,6 +194,19 @@ footer{
     bottom: 20px;
     left:80px;
 }
+.btn-circle-submit {
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 0;
+    line-height: 50px;
+    border-radius: 50px;
+    font-size: 25px;
+    position: fixed;
+    bottom: 20px;
+    left:160px;
+}
 .paginate{
     border: 1px solid #DDD;padding:2px;
     margin-top: 10px;
@@ -280,6 +293,12 @@ textarea.form-control{
     border-radius: 70px;
     margin-bottom: 5px;
 }
+.imgProfileThumb{
+    padding-left: 40px;
+    background-repeat: no-repeat;
+    background-position: left !important;
+    background-size: contain !important;
+}
 /* Attachment Thumb */
 .attachmentThumb{
     width:70px;
@@ -294,8 +313,8 @@ textarea.form-control{
     margin-bottom: 10px;
     text-decoration: none;
 }
-.parsley-required{
-    color: crimson;
+.parsley-errors-list,.parsley-required,.parsley-range,.parsley-maxlength{
+    color: crimson !important;
 }
 .badge{
     font-weight: lighter;
@@ -326,4 +345,25 @@ textarea.form-control{
 }
 .center{
     text-align: center !important;
+}
+.grid-box{
+    width:95%;
+}
+.left{
+    text-align: left !important;
+}
+.hint{
+    font-size: 80%;
+    color: #999;
+}
+.half-box{
+    width: 42%;
+    display: inline;
+    margin-right: 5px;
+}
+.zero-height{
+    height:0px !important;
+}
+.fifty-height{
+    height:50px !important;
 }

@@ -26,8 +26,9 @@
 
 <!-- Admin -->
 <link href="<?php echo BASE_URL; ?>sulata/css/admin/style.css" rel="stylesheet" type="text/css"/>
+<!-- Favicon -->
+<link rel="icon" href="<?php echo BASE_URL; ?>sulata/css/favicon.png">
 <?php
-
 if ($_COOKIE['ck_theme'] != '') {
     $_SESSION[SESSION_PREFIX . 'user_theme'] = $_COOKIE['ck_theme'];
 }

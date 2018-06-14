@@ -9,9 +9,6 @@
                     <td width="75%" id="sidebar-nav">
                         <div>&nbsp;</div>
                         <?php if ($_SESSION[SESSION_PREFIX . 'admin_login'] != '') { ?>
-                            <?php if ($getSettings['show_profile_picture'] == 1 && $_SESSION[SESSION_PREFIX . 'user_photo'] != '' && file_exists(ADMIN_UPLOAD_PATH . urldecode($_SESSION[SESSION_PREFIX . 'user_photo']))) { ?>
-                                <div class="imgThumbRound" style="background-image: url(<?php echo BASE_URL . 'files/' . urldecode($_SESSION[SESSION_PREFIX . 'user_photo']); ?>);"></div>
-                            <?php } ?>
                             <ul>
                                 <li>
                                     <a id="lk_home" href="<?php echo ADMIN_URL; ?>index<?php echo PHP_EXTENSION; ?>/home/"><i class="fa fa-home"></i>&nbsp;&nbsp;Home</a>
@@ -29,6 +26,9 @@
                                 }
                                 ?>
                                 <li><a id="lk_sound" target="remote" href="<?php echo ADMIN_URL; ?>themes<?php echo PHP_EXTENSION; ?>/sound/"><i class="fa <?php echo $soundIcon; ?>" id="sound-icon"></i>&nbsp;&nbsp;Sounds</a></li>
+                                <?php if ($_SESSION[SESSION_PREFIX . 'user_id'] == ADMIN_1) { ?>
+                                    <li><a id="lk__settings" href="<?php echo ADMIN_URL; ?>manage<?php echo PHP_EXTENSION; ?>/_settings/"><i class="fa fa-cogs"></i>&nbsp;&nbsp;Settings</a></li>
+                                <?php } ?>
                                 <li class="hr"></li>
                                 <?php
                                 suBuildFormLinks();

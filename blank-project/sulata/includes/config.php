@@ -2,8 +2,8 @@
 
 /*
  * MAGIC PHP
- * Version: #VERSION#
- * Release Date: #RELEASE_DATE#
+ * Version: 2.0
+ * Release Date: May 3, 2018
  */
 //Start session
 session_start();
@@ -13,11 +13,11 @@ error_reporting("E_ALL & ~E_NOTICE");
 //ini_set('display_errors', 1);
 
 /* MISC SETTINGS */
-define('LOCAL_URL', 'http://localhost/#PROJECT_NAME#/');
-define('WEB_URL', 'http://localhost/#PROJECT_NAME#/');
+define('LOCAL_URL', 'http://localhost/karafit/');
+define('WEB_URL', 'http://localhost/karafit/');
 define('ADMIN_FOLDER', '_admin'); //This is the name of admin folder
 define('MAGIC_FOLDER', '_magic'); //This is the name of magic folder
-define('SESSION_PREFIX', 'a#SESSION_PREFIX#_');
+define('SESSION_PREFIX', 'a5af073784b815_');
 define('UID_LENGTH', 18); //13 from uid, 1 from _, 4 from prefix
 define('COOKIE_EXPIRY_DAYS', '30');
 
@@ -45,15 +45,15 @@ if (!strstr($_SERVER['HTTP_HOST'], ".")) {
     define('LOCAL', TRUE);
     //API Settings
     define('API_URL', BASE_URL . 'phpMyRest/');
-    define('API_KEY', 'x#API_KEY#');
+    define('API_KEY', 'x5af073784b8275af073784b82c');
     define('API_DEBUG', FALSE);
     //MySQL DB Settings
-    define('DB_HOST', '#DB_HOST#');
-    define('DB_NAME', '#DB_NAME#');
-    define('DB_USER', '#DB_USER#');
-    define('DB_PASSWORD', '#DB_PASSWORD#');
-    define('DB_PORT', '#DB_PORT#');
-    define('DB_JSON_FIELD', '#DB_JSON_FIELD#');
+    define('DB_HOST', '127.0.0.1');
+    define('DB_NAME', 'karafit');
+    define('DB_USER', 'root');
+    define('DB_PASSWORD', 'root');
+    define('DB_PORT', '3306');
+    define('DB_JSON_FIELD', 'text');
 } else { //If online
     define('PHP_EXTENSION', '.php'); //This will add or remove '.php' in file links
 
@@ -76,15 +76,15 @@ if (!strstr($_SERVER['HTTP_HOST'], ".")) {
     define('LOCAL', FALSE);
     //API Settings
     define('API_URL', BASE_URL . 'phpMyRest/');
-    define('API_KEY', 'x#API_KEY#');
+    define('API_KEY', 'x5af073784b8275af073784b82c');
     define('API_DEBUG', FALSE);
     //MySQL Settings
-    define('DB_HOST', '#DB_HOST#');
-    define('DB_NAME', '#DB_NAME#');
-    define('DB_USER', '#DB_USER#');
-    define('DB_PASSWORD', '#DB_PASSWORD#');
-    define('DB_PORT', '#DB_PORT#');
-    define('DB_JSON_FIELD', '#DB_JSON_FIELD#');
+    define('DB_HOST', '127.0.0.1');
+    define('DB_NAME', 'karafit');
+    define('DB_USER', 'root');
+    define('DB_PASSWORD', 'root');
+    define('DB_PORT', '3306');
+    define('DB_JSON_FIELD', 'text');
 }
 /* DISPLAY ERRORS */
 if (DEBUG == TRUE) {
@@ -102,7 +102,7 @@ $duplicateAccess = FALSE;
 $downloadAccessCSV = FALSE;
 $downloadAccessPDF = FALSE;
 
-/* INSTANTIATE DOCUMENT READY GLOBAL VARIABLE */
+/* INSTANTIATE DOCUMENT READY SESSION */
 $documentReady = '';
 $documentReadyUid = 'document_ready_js_' . uniqid();
 $GLOBALS[$documentReadyUid] = '';

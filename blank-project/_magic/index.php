@@ -146,9 +146,9 @@ $sql = $sqlSelect . $sqlFrom;
                                             <tr id="row_<?php echo $row['id']; ?>">
                                                 <td><?php echo $sr = $sr + 1; ?>.</td>
                                                 <td><?php echo suUnstrip($row['title']); ?>
-                                                <?php if (in_array($row['slug'], $reservedTables)) { ?>
-                                                    <sup class="color-Crimson">Reserved Table</sup>
-                                                <?php } ?>
+                                                    <?php if (in_array($row['slug'], $reservedTables)) { ?>
+                                                        <sup class="color-Crimson">Reserved Table</sup>
+                                                    <?php } ?>
                                                 </td>
                                                 <td><?php echo suUnstrip($row['slug']); ?></td>
                                                 <td><?php echo $row['display']; ?></td>
