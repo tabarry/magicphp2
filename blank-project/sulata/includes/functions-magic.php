@@ -381,7 +381,7 @@ if (!function_exists('suBuildField')) {
 
             //Phone
             case "phone":
-                $arg = array('type' => 'number', 'name' => $arr['Slug'], 'id' => $arr['Slug'], 'autocomplete' => 'off');
+                $arg = array('type' => 'text', 'name' => $arr['Slug'], 'id' => $arr['Slug'], 'autocomplete' => 'off');
                 if ($arr['_____value'] != '') {
                     $arr['Default'] = $arr['_____value'];
                 }
@@ -6894,7 +6894,7 @@ function suAddMore($sourceForm, $values = '', $addMoreCounter = '') {//mode is a
 
             //Phone
             case "phone":
-                $arg = array('type' => 'number', 'id' => $sourceForm . FIELD_SEPARATOR . $arr[$i]['Slug'] . FIELD_SEPARATOR . '[]', 'name' => $arr[$i]['Slug'] . $addMoreCounter, 'autocomplete' => 'off');
+                $arg = array('type' => 'text', 'id' => $sourceForm . FIELD_SEPARATOR . $arr[$i]['Slug'] . FIELD_SEPARATOR . '[]', 'name' => $arr[$i]['Slug'] . $addMoreCounter, 'autocomplete' => 'off');
                 //Parsley
                 $arg = array_merge($arg, array('data-parsley-type' => 'integer', 'data-parsley-trigger' => 'keyup'));
                 if ($arr[$i]['CssClass'] != '') {
