@@ -1923,11 +1923,6 @@ if (!function_exists('suValidateFieldType')) {
 
                 if ($fieldValue != 0) {
 
-
-                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
-                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
-                    }
-                } else {
                     if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
                         $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
                     }
@@ -1938,10 +1933,6 @@ if (!function_exists('suValidateFieldType')) {
                 if ($fieldValue != 0) {
                     if (!filter_var($fieldValue, FILTER_VALIDATE_FLOAT)) {
                         $vError[] = sprintf(VALID_NUMBER, urldecode($fieldName));
-                    }
-                } else {
-                    if (!filter_var($fieldValue, FILTER_VALIDATE_INT)) {
-                        $vError[] = sprintf(VALID_INTEGER, urldecode($fieldName));
                     }
                 }
             }

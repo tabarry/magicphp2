@@ -77,6 +77,11 @@
 
         });//Dynamic date picker ends
 
+//Define segment and mode
+        var tableSegment = '<?php echo $tableSegment; ?>';
+        var pageMode = '<?php echo $pageMode; ?>';
+        //Include a JS file for additional JS functionalities
+<?php include('../sulata/js/common/another-this-site.js'); ?>
 
 
     });

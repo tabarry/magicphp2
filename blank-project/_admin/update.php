@@ -13,6 +13,7 @@ checkAdminLogin();
 $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 $mode = 'update';
+$pageMode = $mode;
 $table = suSegment(1);
 $tableSegment = suSegment(1);
 $rid = suSegment(2);

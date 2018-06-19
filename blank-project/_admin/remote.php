@@ -662,6 +662,8 @@ if ($_GET['do'] == 'autocomplete') {
     $field = suSlugifyStr($field, '_');
     $extraSql = html_entity_decode($arr['ExtraSQL']);
     $extraSQL = suDecrypt($_GET['extra']);
+    $extraSQL = str_replace('&quot;', '"', $extraSQL);
+
 
     $sql = "SELECT " . suJsonExtract('data', $field, FALSE) . " AS f1, " . suJsonExtract('data', $field, FALSE) . " AS f2 FROM  " . suUnTablify($table) . " WHERE lcase(" . suJsonExtract('data', $field, FALSE) . ") LIKE lcase('%" . suUnstrip($_REQUEST['term']) . "%') AND live='Yes'  " . $extraSQL . " GROUP BY " . suJsonExtract('data', $field, FALSE) . "ORDER BY " . suJsonExtract('data', $field, FALSE);
 

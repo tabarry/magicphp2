@@ -14,6 +14,7 @@ checkAdminLogin();
 $sessionUserId = $_SESSION[SESSION_PREFIX . 'user_id'];
 
 $mode = 'add';
+$pageMode = $mode;
 $table = suSegment(1);
 $tableSegment = suSegment(1);
 //Stop unauthorised add access
@@ -90,7 +91,7 @@ $date_format = $getSettings['date_format'];
     </head>
     <body>
         <p id="loading-area"></p>
-        <div class="container-fluid" id="container-area1">
+        <div class="container-fluid" id="container-area">
             <div class="row">
                 <main>
                     <div class="col-sm-10 content-area" id="working-area">
