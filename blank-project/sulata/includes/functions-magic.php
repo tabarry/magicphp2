@@ -363,6 +363,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . suUnstrip($arr['Name'])));
@@ -469,7 +476,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
-
+//Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name']));
@@ -634,6 +647,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name']));
@@ -739,6 +759,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name']));
@@ -834,6 +861,13 @@ if (!function_exists('suBuildField')) {
                     if ($getSettings['show_clear_field'] == 1) {
                         $clearIcon = "<a title='" . CLEAR_FIELD . "' id='clear_" . $arr['Slug'] . "' href='javascript:;' onclick=\"$('#" . $arr['Slug'] . "').val('')\"><i class='fa fa-times-circle-o'></i></a>";
                     } else {
+                        $clearIcon = "";
+                    }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -1739,6 +1773,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                     $arg = array_merge($arg, array('placeholder' => TYPE_FOR_SUGGESTIONS));
                 } else {
@@ -2454,6 +2495,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label> <sup id='sup_" . $arr['Slug'] . "'>" . $getSettings['site_currency'] . "</sup>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name'] . " (" . $getSettings['site_currency'] . ")"));
@@ -2560,6 +2608,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label> <sup id='sup_" . $arr['Slug'] . "'>" . $getSettings['site_currency'] . "</sup>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name'] . " (%)"));
@@ -2664,6 +2719,13 @@ if (!function_exists('suBuildField')) {
                     if ($getSettings['show_clear_field'] == 1) {
                         $clearIcon = "<a title='" . CLEAR_FIELD . "' id='clear_" . $arr['Slug'] . "' href='javascript:;' onclick=\"$('#" . $arr['Slug'] . "').val('')\"><i class='fa fa-times-circle-o'></i></a>";
                     } else {
+                        $clearIcon = "";
+                    }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -2849,6 +2911,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name']));
@@ -2958,6 +3027,13 @@ if (!function_exists('suBuildField')) {
                     } else {
                         $clearIcon = "";
                     }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                        $clearIcon = "";
+                    }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
                 } else {
                     $arg = array_merge($arg, array('placeholder' => $requiredStar . $arr['Name']));
@@ -3065,6 +3141,13 @@ if (!function_exists('suBuildField')) {
                     if ($getSettings['show_clear_field'] == 1) {
                         $clearIcon = "<a title='" . CLEAR_FIELD . "' id='clear_" . $arr['Slug'] . "' href='javascript:;' onclick=\"$('#" . $arr['Slug'] . "').val('')\"><i class='fa fa-times-circle-o'></i></a>";
                     } else {
+                        $clearIcon = "";
+                    }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -3249,6 +3332,13 @@ if (!function_exists('suBuildField')) {
                     if ($getSettings['show_clear_field'] == 1) {
                         $clearIcon = "<a title='" . CLEAR_FIELD . "' id='clear_" . $arr['Slug'] . "' href='javascript:;' onclick=\"$('#" . $arr['Slug'] . "').val('')\"><i class='fa fa-times-circle-o'></i></a>";
                     } else {
+                        $clearIcon = "";
+                    }
+                    //Remove the clear icon if readonly
+                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                        $clearIcon = "";
+                    }
+                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
