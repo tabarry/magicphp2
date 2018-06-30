@@ -20,13 +20,19 @@ if (DUBUG == TRUE) {
 }
 
 //Generate password
-function suGeneratePassword() {
+function suGeneratePassword($startChars = FALSE) {
     $colors = array('white', 'yellow', 'pink', 'red', 'orange', 'blue', 'green', 'purple', 'brown', 'black');
     $rand = rand(0, sizeof($colors) - 1);
     $rand = $colors[$rand];
-    $time = time();
-    $time = substr($time, -4);
-    $password = $rand . $time;
+    if ($startChars == FALSE) {
+        $time = time();
+        $time = substr($time, -4);
+        $password = $rand . $time;
+    } else {
+        $time = time();
+        $time = substr($time, 0, 4);
+        $password = $rand . $time;
+    }
     return $password;
 }
 
@@ -38,7 +44,7 @@ define('SUPER_USER_LOGIN', 'superman@sulata.com.pk');
 define('SUPER_USER_PASSWORD', 'krypton');
 define('ADMIN_USER', 'Admin');
 define('ADMIN_LOGIN', 'admin@sulata.com.pk');
-define('ADMIN_PASSWORD', 'pepper#000');
+define('ADMIN_PASSWORD', 'pepper#' . suGeneratePassword(TRUE));
 
 //Messages
 define('FOLDER_ALREADY_EXISTS', 'A folder with the name `%s` already exists.');

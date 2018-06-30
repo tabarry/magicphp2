@@ -28,17 +28,17 @@ if (isset($_COOKIE['ck_db_port']) && $_COOKIE['ck_db_port'] != '') {
 }
 
 //Form fields
-$onkeyup = "document.getElementById('project_folder').value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');";
+$onkeyup = "document.getElementById('project_folder').value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');document.getElementById('project-name').innerHTML=this.value;";
 $onkeyup2 = "this.value=doSlugify(this.value, '_');document.getElementById('db_name').value=doSlugify(this.value, '_');document.getElementById('project-name').innerHTML=this.value;";
 $fieldsArray = array(
-    'project_name' => array('placeholder' => 'Project Name', 'title' => 'Project Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'autocomplete' => 'off','onkeyup' => $onkeyup),
+    'project_name' => array('placeholder' => 'Project Name', 'title' => 'Project Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'autocomplete' => 'off', 'onkeyup' => $onkeyup),
     'project_folder' => array('placeholder' => 'Project Folder', 'title' => 'Project Folder', 'required' => 'yes', 'type' => 'text', 'value' => '', 'onkeyup' => $onkeyup2, 'autocomplete' => 'off'),
     'db_name' => array('placeholder' => 'Database Name', 'title' => 'Database Name', 'required' => 'yes', 'type' => 'text', 'value' => '', 'autocomplete' => 'off'),
     'db_user' => array('placeholder' => 'Database User', 'title' => 'Database User', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_user, 'autocomplete' => 'off'),
     'db_password' => array('placeholder' => 'Database Password', 'title' => 'Database Password', 'type' => 'password', 'value' => $ck_db_password, 'autocomplete' => 'off'),
     'db_host' => array('placeholder' => 'Database Host', 'title' => 'Database Host', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_host, 'autocomplete' => 'off'),
     'db_port' => array('placeholder' => 'Database Port', 'title' => 'Database Port', 'required' => 'yes', 'type' => 'text', 'value' => $ck_db_port, 'autocomplete' => 'off'),
-    'magic_password' => array('type' => 'hidden', 'value' => MAGIC_PASSWORD,),
+    'magic_password' => array('type' => 'hidden', 'value' => MAGIC_PASSWORD,), 'admin_password' => array('type' => 'hidden', 'value' => ADMIN_PASSWORD,),
 );
 
 //If form submitted
@@ -58,6 +58,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
     $config_path = '../' . $project_folder . '/sulata/includes/config.php';
     $magic_config_sample_path = '../' . $project_folder . '/sulata/includes/magic-config-sample.php';
     $magic_config_path = '../' . $project_folder . '/sulata/includes/magic-config.php';
+    $logins_path = '../' . $project_folder . '/logins-delete-this-file.php';
 
     $project_magic_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_folder . '/_magic/login.php?';
     $project_admin_location = 'http://' . $_SERVER['HTTP_HOST'] . '/' . $project_folder . '/_admin/login.php?';
@@ -140,6 +141,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         //Popuate db
         $sql = "USE " . $project_folder;
         mysqli_query($link, $sql);
+        //Make admin password
         $db_dump = file_get_contents($db_dump_path);
         $db_dump = str_replace("#SITE_NAME#", urlencode(stripslashes($_POST['project_name'])), $db_dump);
         $db_dump = str_replace("#SUPER_USER#", urlencode(SUPER_USER), $db_dump);
@@ -148,7 +150,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
         $db_dump = str_replace("#MAGIC_LOGIN#", urlencode(MAGIC_LOGIN), $db_dump);
         $db_dump = str_replace("#ADMIN_USER#", urlencode(ADMIN_USER), $db_dump);
         $db_dump = str_replace("#ADMIN_LOGIN#", urlencode(ADMIN_LOGIN), $db_dump);
-        $db_dump = str_replace("#ADMIN_PASSWORD#", suCrypt(ADMIN_PASSWORD), $db_dump);
+        $db_dump = str_replace("#ADMIN_PASSWORD#", suCrypt($_POST['admin_password']), $db_dump);
         $db_dump = str_replace("#MAGIC_LOGIN#", urlencode(MAGIC_LOGIN), $db_dump);
         $db_dump = str_replace("#MAGIC_PASSWORD#", urlencode($_POST['magic_password']), $db_dump);
 
@@ -165,6 +167,14 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
                 mysqli_query($link, $sql);
             }
         }
+        //Write login info to logins.php file
+        $logins = "<?\n\n";
+        $logins .= "/** Save this information somewhere and delete this file. **/\n\n";
+        $logins .= "/*\n";
+        $logins .= "_magic Login:`magic@sulata.com.pk` Password: `" . $_POST['magic_password'] . "`.\n";
+        $logins .= "_admin Login: `admin@sulata.com.pk` Password: `" . $_POST['admin_password'] . "`.\n";
+        $logins .= "*/";
+        suWriteFile($logins_path, $logins);
         //Finish project
         //$js = "alert('" . sprintf(SUCCESS_MESSAGE, $project_folder) . "');window.location.href='index.php?do=nothing;';top.window.location.href='" . $project_magic_location . "'";
         $js = "parent.document.getElementById('suForm').style.display='none';";
