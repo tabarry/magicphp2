@@ -168,7 +168,7 @@ if (isset($_GET['do']) && $_GET['do'] == 'magic') {
             }
         }
         //Write login info to logins.php file
-        $logins = "<?\n\n";
+        $logins = "<?php\n\n";
         $logins .= "/** Save this information somewhere and delete this file. **/\n\n";
         $logins .= "/*\n";
         $logins .= "_magic Login:`magic@sulata.com.pk` Password: `" . $_POST['magic_password'] . "`.\n";
