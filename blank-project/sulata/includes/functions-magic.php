@@ -254,7 +254,7 @@ if (!function_exists('suProcessForm')) {
 if (!function_exists('suBuildField')) {
 
     function suBuildField($arr, $mode, $labelRequirement = 'No') {//mode is add or update
-        global $getSettings, $today, $duplicate, $addAccess, $save_for_later, $mode, $documentReadyUid, $tableSegment, $table, $rid;
+        global $getSettings, $today, $duplicate, $addAccess, $save_for_later, $mode, $documentReadyUid, $tableSegment, $table, $rid, $pageMode;
         $mode2 = $mode;
         if ($duplicate == TRUE) {
             $mode = 'add';
@@ -329,23 +329,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         unset($arg['required']);
@@ -364,10 +364,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -445,23 +445,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -477,10 +477,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
 //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -617,23 +617,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -648,10 +648,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -729,23 +729,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -760,10 +760,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -831,25 +831,25 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
 
 
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -864,10 +864,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -892,7 +892,7 @@ if (!function_exists('suBuildField')) {
                 if ($arr['_____value'] != '') {
                     $arr['Default'] = $arr['_____value'];
                 } else {
-                    if ($mode == 'add') {
+                    if ($pageMode == 'add') {
                         $arr['Default'] = date('Y') + ($arr['Default']);
                     }
                 }
@@ -932,23 +932,23 @@ if (!function_exists('suBuildField')) {
                 }
 
 
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -1029,23 +1029,23 @@ if (!function_exists('suBuildField')) {
                 }
 
 
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -1107,23 +1107,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['OnChange'] != '') {
                     $arg = array_merge($arg, array('onchange' => $arr['OnChange']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -1223,23 +1223,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['OnChange'] != '') {
                     $arg = array_merge($arg, array('onchange' => $arr['OnChange']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -1443,23 +1443,23 @@ if (!function_exists('suBuildField')) {
                     $arg = array_merge($arg, array('value' => suDecrypt($arr['Default'])));
                     $arg2 = array_merge($arg2, array('value' => suDecrypt($arr['Default'])));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -1531,7 +1531,7 @@ if (!function_exists('suBuildField')) {
                 }
                 //Required
                 $requiredStar = '';
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($save_for_later == 'No') {
                         if ($arr['Required'] == 'yes') {
                             $arg = array_merge($arg, array('data-parsley-required' => 'true'));
@@ -1551,7 +1551,7 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if (file_exists(ADMIN_UPLOAD_PATH . $arr['Default']) && ($arr['Default'] != '')) {
 
                         echo "<a target='_blank' href='" . UPLOAD_URL . $arr['Default'] . "' class='imgThumb' style='background:url(" . UPLOAD_URL . $arr['Default'] . ")'></a><p><a target='_blank' href='" . BASE_URL . 'files/' . $arr['Default'] . "'>" . suUnMakeUploadPath($arr['Default']) . "</a></p>";
@@ -1577,7 +1577,7 @@ if (!function_exists('suBuildField')) {
                 //Build title
                 $arg = array_merge($arg, array('title' => $arr['Name']));
                 echo suInput('input', $arg);
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     $arg2 = array('type' => 'hidden', 'name' => RESERVED_PREVIOUS_PREFEX . $arr['Slug'], 'id' => RESERVED_PREVIOUS_PREFEX . $arr['Slug'], 'value' => $arr['_____value']);
                     echo suInput('input', $arg2);
                 }
@@ -1623,7 +1623,7 @@ if (!function_exists('suBuildField')) {
                 }
 //Required
                 $requiredStar = '';
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($save_for_later == 'No') {
                         if ($arr['Required'] == 'yes') {
                             $arg = array_merge($arg, array('data-parsley-required' => 'true'));
@@ -1643,7 +1643,7 @@ if (!function_exists('suBuildField')) {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
 
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if (file_exists(ADMIN_UPLOAD_PATH . $arr['Default']) && ($arr['Default'] != '')) {
                         $ext = suGetExtension($arr['Default']);
                         if ($ext == 'pdf') {
@@ -1693,7 +1693,7 @@ if (!function_exists('suBuildField')) {
                 //Build title
                 $arg = array_merge($arg, array('title' => $arr['Name']));
                 echo suInput('input', $arg);
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     $arg2 = array('type' => 'hidden', 'name' => RESERVED_PREVIOUS_PREFEX . $arr['Slug'], 'id' => RESERVED_PREVIOUS_PREFEX . $arr['Slug'], 'value' => $arr['_____value']);
                     echo suInput('input', $arg2);
                 }
@@ -1774,10 +1774,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -2465,23 +2465,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -2496,10 +2496,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label> <sup id='sup_" . $arr['Slug'] . "'>" . $getSettings['site_currency'] . "</sup>";
@@ -2578,23 +2578,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -2609,10 +2609,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label> <sup id='sup_" . $arr['Slug'] . "'>" . $getSettings['site_currency'] . "</sup>";
@@ -2681,7 +2681,7 @@ if (!function_exists('suBuildField')) {
                 }
 
                 if ($arr['Default'] != '') {
-                    if ($mode == 'add') {
+                    if ($pageMode == 'add') {
                         $sqlDate = "SELECT DATE_ADD('" . date('Y-m-d') . "', INTERVAL " . $arr['Default'] . " DAY) AS dt";
                         $resultDate = suQuery($sqlDate);
                         $arr['Default'] = $resultDate['result'][0]['dt'];
@@ -2691,23 +2691,23 @@ if (!function_exists('suBuildField')) {
                 } else {
                     $arr['Default'] = '';
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -2722,10 +2722,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -2798,13 +2798,13 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     //$arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -2881,23 +2881,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     //$arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -2912,10 +2912,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -2933,14 +2933,14 @@ if (!function_exists('suBuildField')) {
                     echo '<span id="data_span_' . $arr['Slug'] . '">';
                     echo suInput('textarea', $arg, $arr['Default'], TRUE);
                     echo '</span>';
-                    if ($mode = 'update') {
+                    if ($pageMode = 'update') {
                         $charCount = strlen($arr['Default']);
                     } else {
                         $charCount = 0;
                     }
                     if ($arr['Length'] > 0) {
                         echo "<div class='color-gray pull-right' id='" . $arr['Slug'] . "_charcount'>" . $charCount . "/" . $arr['Length'] . "</div>";
-                        if ($mode = 'update') {
+                        if ($pageMode = 'update') {
                             //suPrints("doWordCount('".$_POST[$arr['Slug']]."', '100')");
                         }
                     }
@@ -2997,23 +2997,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -3028,10 +3028,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -3113,23 +3113,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -3144,10 +3144,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
@@ -3205,7 +3205,7 @@ if (!function_exists('suBuildField')) {
                     $arg = array_merge($arg, array('class' => $arr['CssClass']));
                 }
 
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         
                     }
@@ -3221,7 +3221,7 @@ if (!function_exists('suBuildField')) {
                     echo suInput('legend', $arg, $arr['Length'], TRUE);
                     echo '</span>';
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -3239,12 +3239,12 @@ if (!function_exists('suBuildField')) {
                     $arg = array_merge($arg, array('class' => 'zero-height clearfix'));
                 }
 
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     echo suInput('div', $arg, '', TRUE);
                 } else {
                     echo suInput('div', $arg, '', TRUE);
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -3304,23 +3304,23 @@ if (!function_exists('suBuildField')) {
                 if ($arr['Default'] != '') {
                     $arg = array_merge($arg, array('value' => $arr['Default']));
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['ReadOnlyAdd'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['ReadOnlyUpdate'] == 'yes') {
                         $arg = array_merge($arg, array('readonly' => 'readonly'));
                     }
                 }
-                if ($mode == 'update') {
+                if ($pageMode == 'update') {
                     if ($arr['HideOnUpdate'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
                     }
                 }
-                if ($mode == 'add') {
+                if ($pageMode == 'add') {
                     if ($arr['HideOnAdd'] == 'yes') {
                         unset($arg['Type']);
                         $arg = array_merge($arg, array('type' => 'hidden'));
@@ -3335,10 +3335,10 @@ if (!function_exists('suBuildField')) {
                         $clearIcon = "";
                     }
                     //Remove the clear icon if readonly
-                    if ($mode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
+                    if ($pageMode == 'add' && $arr['ReadOnlyAdd'] == 'yes') {
                         $clearIcon = "";
                     }
-                    if ($mode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
+                    if ($pageMode == 'update' && $arr['ReadOnlyUpdate'] == 'yes') {
                         $clearIcon = "";
                     }
                     echo "<label id='lbl_" . $arr['Slug'] . "'>" . $requiredStar . $arr['Name'] . ": {$clearIcon}</label>";
