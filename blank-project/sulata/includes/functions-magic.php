@@ -255,6 +255,7 @@ if (!function_exists('suBuildField')) {
 
     function suBuildField($arr, $mode, $labelRequirement = 'No') {//mode is add or update
         global $getSettings, $today, $duplicate, $addAccess, $save_for_later, $mode, $documentReadyUid, $tableSegment, $table, $rid, $pageMode;
+
         $mode2 = $mode;
         if ($duplicate == TRUE) {
             $mode = 'add';
@@ -2933,14 +2934,14 @@ if (!function_exists('suBuildField')) {
                     echo '<span id="data_span_' . $arr['Slug'] . '">';
                     echo suInput('textarea', $arg, $arr['Default'], TRUE);
                     echo '</span>';
-                    if ($pageMode = 'update') {
+                    if ($pageMode == 'update') {
                         $charCount = strlen($arr['Default']);
                     } else {
                         $charCount = 0;
                     }
                     if ($arr['Length'] > 0) {
                         echo "<div class='color-gray pull-right' id='" . $arr['Slug'] . "_charcount'>" . $charCount . "/" . $arr['Length'] . "</div>";
-                        if ($pageMode = 'update') {
+                        if ($pageMode == 'update') {
                             //suPrints("doWordCount('".$_POST[$arr['Slug']]."', '100')");
                         }
                     }
@@ -3657,13 +3658,11 @@ if (!function_exists('suPreviewField')) {
 
                 //Separator
                 case "separator":
-
                     break;
 
 
                 //URL
                 case "url":
-
 
                     $tableData = "<td id='preview-td-1-" . suUnstrip($arr['Slug']) . "' width='30%'><strong>" . suUnstrip($arr['Name']) . ":</strong></td><td id='preview-td-2-" . suUnstrip($arr['Slug']) . "'><a href='" . suUnstrip($arr['_____value']) . "'>" . suUnstrip($arr['_____value']) . "</a></td>";
                     break;
