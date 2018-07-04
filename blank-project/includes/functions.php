@@ -12,9 +12,16 @@ include('sulata/includes/functions-mysql.php');
 include('sulata/includes/functions-validation.php');
 /* include core framework functions */
 include('sulata/includes/functions-framework.php');
+/* include core magic functions */
+include('sulata/includes/functions-magic.php');
 /* include this site only functions */
 include('sulata/includes/functions-this-site.php');
 /* include PHP Mailer */
 require_once('sulata/phpmailer/class.phpmailer.php');
+/* Get Settings */
+//suGetSettings();
 /* Do not delete above this line*/
+
+
+
 
