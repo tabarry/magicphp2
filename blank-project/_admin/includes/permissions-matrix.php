@@ -20,7 +20,7 @@ if ($tableSegment == 'groups') {
         <div class="form-group">
             <?php
             //Groups
-            $sqlGr = "SELECT id,title,slug,show_sorting_module  FROM " . STRUCTURE_TABLE_NAME . " WHERE display='Yes' AND live='Yes' ORDER BY title";
+            $sqlGr = "SELECT id,title,slug,show_sorting_module  FROM " . STRUCTURE_TABLE_NAME . " WHERE /*display='Yes' AND*/ live='Yes' ORDER BY title";
             $resultGr = suQuery($sqlGr);
             $resultGr['result'] = suUnstrip($resultGr['result']);
             $resultGr = $resultGr['result'];
