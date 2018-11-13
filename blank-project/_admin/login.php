@@ -43,7 +43,7 @@ if ($do == 'logout') {
 //Login
 if ($do == 'login') {
 
-    $sql = "SELECT id, " . suJsonExtract('data', 'name') . "," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'photo') . "," . suJsonExtract('data', 'theme') . "," . suJsonExtract('data', 'sound_settings') . "," . suJsonExtract('data', 'navigation_settings') . "," . suJsonExtract('data', 'user_group') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "' AND " . suJsonExtract('data', 'password', FALSE) . "='" . suCrypt($_POST['password']) . "' AND " . suJsonExtract('data', 'status', FALSE) . "='" . suStrip('Active') . "' LIMIT 0,1";
+    $sql = "SELECT id, " . suJsonExtract('data', 'name') . "," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'photo') . "," . suJsonExtract('data', 'theme') . "," . suJsonExtract('data', 'sound_settings') . "," . suJsonExtract('data', 'navigation_settings') . "," . suJsonExtract('data', 'user_group') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "' AND " . suJsonExtract('data', 'password', FALSE) . "='" . suCrypt($_POST['password']) . "' AND " . suJsonExtract('data', 'status', FALSE) . "='" . suStrip('Active') . "' AND Live='Yes' LIMIT 0,1";
 
     //Any actions desired at this point should be coded in this file
     if (file_exists('includes/custom/login-a.php')) {
@@ -120,7 +120,7 @@ if ($do == 'login') {
 
 //Retrieve
 if ($do == 'retrieve-password') {
-    $sql = "SELECT id," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'password') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "'";
+    $sql = "SELECT id," . suJsonExtract('data', 'email') . "," . suJsonExtract('data', 'password') . " FROM " . USERS_TABLE_NAME . " WHERE " . suJsonExtract('data', 'email', FALSE) . "='" . suPost('email') . "' AND Live='Yes' ";
     //Any actions desired at this point should be coded in this file
     if (file_exists('includes/custom/login-b.php')) {
         include('includes/custom/login-b.php');
