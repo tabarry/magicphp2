@@ -135,7 +135,7 @@ $h1 = $title;
                                     $row = $result['result'];
                                     foreach ($row as $value) {
                                         ?>
-                                        <li class="ui-state-default"><i class="fa fa-th color-lightSlateGray"></i> <?php echo $value['name']; ?><input type="hidden" name="sortOrder[]" value="<?php echo $value['id']; ?>"/></li>
+                                        <li class="ui-state-default"><i class="fa fa-th color-lightSlateGray"></i> <?php echo $value[$sortFieldToShow]; ?><input type="hidden" name="sortOrder[]" value="<?php echo $value['id']; ?>"/></li>
                                         <?php
                                     }
                                 }
