@@ -282,7 +282,7 @@ $data = $data_data;
                                 if ($saveForLater == 'Yes') {
                                     if ($data['save_for_later_use'] != 'No' || $duplicate != FALSE) {
                                         echo ' ';
-                                        $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme');
+                                        $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme', 'title' => SAVE_FOR_LATER);
                                         echo suInput('button', $arg, $saveButton, TRUE);
                                     }
                                 }

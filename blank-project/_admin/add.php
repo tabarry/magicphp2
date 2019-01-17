@@ -209,7 +209,7 @@ $date_format = $getSettings['date_format'];
                                 //If save for later
                                 if ($save_for_later == 'Yes') {
                                     echo ' ';
-                                    $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme');
+                                    $arg = array('type' => 'submit', 'name' => 'save_for_later', 'id' => 'save_for_later', 'class' => 'btn btn-theme', 'title' => SAVE_FOR_LATER);
                                     echo suInput('button', $arg, $saveButton, TRUE);
                                 }
                                 ?>   
